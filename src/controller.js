@@ -1,0 +1,198 @@
+import {
+    DEFAULT_DATASET_REF,
+    datasetUrlFromRecord,
+    externalDataUrl,
+    fetchChemiscopeDatasets,
+    isExternalUrl,
+} from './api.js';
+import { displayError, displayWarning } from './errors.js';
+import { renderFileButtons } from './files.js';
+import { loadDataset, loadLocalFile } from './dataset-loader.js';
+import { renderRecordMeta } from './meta.js';
+import { resolveEntryRef, setLoadParam } from './state.js';
+
+let datasetRecords = [];
+
+export function populateDatasetSelect(records) {
+    datasetRecords = records;
+    var select = document.getElementById('dataset-select');
+    select.innerHTML = '';
+    select.disabled = records.length === 0;
+
+    if (records.length === 0) {
+        select.appendChild(new Option('No chemiscope datasets found', ''));
+        return;
+    }
+
+    select.appendChild(new Option('\u2014 select an archive entry \u2014', ''));
+    for (var i = 0; i < records.length; i++) {
+        var record = records[i];
+        var meta = record.metadata || {};
+        var count = record.files.length + ' file' + (record.files.length === 1 ? '' : 's');
+        var tag = record.doi || record.id;
+        var label = (meta.title || record.id) + ' (' + count + ') [' + tag + ']';
+        var option = new Option(label, record.id);
+        option.dataset.recordIndex = i;
+        select.appendChild(option);
+    }
+}
+
+function selectRecord(record, fileKey, autoLoadFirst) {
+    var metaElement = document.getElementById('record-meta');
+    var filesElement = document.getElementById('dataset-files');
+    renderRecordMeta(metaElement, record);
+    renderFileButtons(filesElement, record, function (key) {
+        setLoadParam(record.id, key);
+        var datasetUrl = datasetUrlFromRecord(record, key);
+        loadDataset(externalDataUrl(datasetUrl));
+    });
+    if (fileKey) {
+        // Highlight the correct pill and load it (caller updates ?load=)
+        var buttons = filesElement.querySelectorAll('.file-button');
+        for (var i = 0; i < buttons.length; i++) {
+            var nameEl = buttons[i].querySelector('.file-button-name');
+            if (nameEl && nameEl.textContent === fileKey) {
+                buttons[i].classList.add('active');
+            }
+        }
+        setLoadParam(record.id, fileKey);
+        var datasetUrl = datasetUrlFromRecord(record, fileKey);
+        loadDataset(externalDataUrl(datasetUrl));
+    } else if (autoLoadFirst) {
+        var first = filesElement.querySelector('.file-button');
+        if (first) {
+            first.click();
+        }
+    }
+}
+
+function handleLocalFile(file) {
+    if (!/\.json(\.gz)?$/i.test(file.name)) {
+        displayWarning('Not a .json / .json.gz file: ' + file.name);
+        return;
+    }
+    loadLocalFile(file).catch(function (error) {
+        displayError(error);
+    });
+}
+
+export function init() {
+    var select = document.getElementById('dataset-select');
+    var url = new URL(window.location.href);
+    var hasLoadParam = url.searchParams.get('load') !== null;
+    var external = url.searchParams.get('load') || DEFAULT_DATASET_REF;
+
+    var howToLoad = document.getElementById('how-to-load');
+    howToLoad.innerHTML =
+        '<p>To visualize a specific dataset, use the ' +
+        '<code>?load=&lt;url&gt;</code> GET parameter in the URL, ' +
+        'or pick an archive entry above, then one of its files. ' +
+        '[The selector updates <code>?load=&lt;entryid&gt;_&lt;file&gt;</code> so you can share the URL.]</p>' +
+        '<p><code>' +
+        window.location.origin +
+        '?load=https://chemiscope.org/examples/Arginine-Dipeptide.json.gz</code></p>';
+
+    select.addEventListener('change', function (event) {
+        var option = event.target.selectedOptions[0];
+        if (!option || option.value === '') {
+            document.getElementById('dataset-files').style.display = 'none';
+            document.getElementById('record-meta').style.display = 'none';
+            setLoadParam('', null);
+            return;
+        }
+        var record = datasetRecords[Number(option.dataset.recordIndex)];
+        if (!record) {
+            return;
+        }
+        renderRecordMeta(document.getElementById('record-meta'), record);
+        var filesElement = document.getElementById('dataset-files');
+        renderFileButtons(filesElement, record, function (key) {
+            setLoadParam(record.id, key);
+            var datasetUrl = datasetUrlFromRecord(record, key);
+            loadDataset(externalDataUrl(datasetUrl));
+        });
+        if (option.dataset.autoLoad === 'true') {
+            var first = filesElement.querySelector('.file-button');
+            if (first) {
+                first.click();
+            }
+        } else {
+            setLoadParam(record.id, null);
+        }
+        option.dataset.autoLoad = 'false';
+    });
+
+    var fileInput = document.getElementById('file-input');
+    var dropZone = document.getElementById('drop-zone');
+
+    fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+            handleLocalFile(fileInput.files[0]);
+        }
+        fileInput.value = '';
+    });
+
+    dropZone.addEventListener('click', function () {
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', function (event) {
+        event.preventDefault();
+        dropZone.classList.add('dragging');
+    });
+
+    dropZone.addEventListener('dragleave', function () {
+        dropZone.classList.remove('dragging');
+    });
+
+    dropZone.addEventListener('drop', function (event) {
+        event.preventDefault();
+        dropZone.classList.remove('dragging');
+        if (event.dataTransfer.files.length > 0) {
+            handleLocalFile(event.dataTransfer.files[0]);
+        }
+    });
+
+    window.addEventListener('dragover', function (event) {
+        event.preventDefault();
+    });
+
+    window.addEventListener('drop', function (event) {
+        event.preventDefault();
+    });
+
+    if (external) {
+        if (isExternalUrl(external)) {
+            loadDataset(externalDataUrl(external));
+        } else {
+            howToLoad.style.display = 'block';
+        }
+    } else {
+        howToLoad.style.display = 'block';
+    }
+
+    fetchChemiscopeDatasets()
+        .then(function (records) {
+            populateDatasetSelect(records);
+            if (external && !isExternalUrl(external)) {
+                var resolved = resolveEntryRef(external, datasetRecords);
+                if (resolved) {
+                    select.selectedIndex = resolved.index + 1;
+                    selectRecord(resolved.record, resolved.file, false);
+                    howToLoad.style.display = 'none';
+                } else if (hasLoadParam) {
+                    displayWarning('Unknown entry/file in URL: ' + external);
+                } else {
+                    // default dataset not in the index (yet): auto-select the first archive record
+                    var firstOption = select.options[1];
+                    if (firstOption) firstOption.dataset.autoLoad = 'true';
+                    select.selectedIndex = 1;
+                    select.dispatchEvent(new Event('change'));
+                    howToLoad.style.display = 'none';
+                }
+            }
+        })
+        .catch(function (error) {
+            displayWarning('Could not load the dataset index: ' + error.toString());
+        });
+}

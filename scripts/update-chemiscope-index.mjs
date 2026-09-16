@@ -59,15 +59,25 @@ function isChemiscopeFile(key) {
   return key.toLowerCase().includes('chemiscope') && /\.json(\.gz)?$/i.test(key);
 }
 
+function formatHumanSize(bytes) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
 function chemiscopeFiles(entries) {
   return Object.entries(entries)
     .filter(([key]) => isChemiscopeFile(key))
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, entry]) => ({
-      key: key,
-      size: entry && entry.size ? entry.size : 0,
-      description: (entry && entry.metadata && entry.metadata.description) || '',
-    }));
+    .map(([key, entry]) => {
+      const size = entry && entry.size ? entry.size : 0;
+      return {
+        key: key,
+        size: size,
+        size_human: formatHumanSize(size),
+        description: (entry && entry.metadata && entry.metadata.description) || '',
+      };
+    });
 }
 
 export async function fetchChemiscopeDatasets() {
