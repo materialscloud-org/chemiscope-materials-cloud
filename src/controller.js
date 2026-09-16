@@ -25,7 +25,7 @@ export function populateDatasetSelect(records) {
         return;
     }
 
-    select.appendChild(new Option('\u2014 select an archive entry \u2014', ''));
+    select.appendChild(new Option('\u2014 example dataset \u2014', ''));
     for (var i = 0; i < records.length; i++) {
         var record = records[i];
         var meta = record.metadata || {};
@@ -90,6 +90,25 @@ function handleLocalFile(file) {
         displayWarning('Not a .json / .json.gz file: ' + file.name);
         return;
     }
+
+    // Reset UI state from any archive selection
+    var select = document.getElementById('dataset-select');
+    select.selectedIndex = 0;
+    setLoadParam('', null);
+    document.getElementById('dataset-files').style.display = 'none';
+
+    // Populate meta with custom file info
+    var metaElement = document.getElementById('record-meta');
+    renderRecordMeta(metaElement, {
+        id: 'local',
+        url: null,
+        doi: null,
+        metadata: {
+            title: 'Custom file: ' + file.name,
+            description: 'Loaded from your local disk. This file may not be part of the Materials Cloud Archive.',
+        }
+    });
+
     loadLocalFile(file).catch(function (error) {
         displayError(error);
     });
@@ -228,6 +247,16 @@ export function init() {
                 } else {
                     // default dataset is a local file in public/ — load it directly
                     howToLoad.style.display = 'none';
+                    var metaElement = document.getElementById('record-meta');
+                    renderRecordMeta(metaElement, {
+                        id: 'example',
+                        url: null,
+                        doi: null,
+                        metadata: {
+                            title: 'Example Dataset',
+                            description: 'You are viewing a bundled example dataset. You can select a Materials Cloud Archive record from the menu above, or drop your own chemiscope file to visualize it.',
+                        }
+                    });
                     loadDataset(external);
                 }
             }

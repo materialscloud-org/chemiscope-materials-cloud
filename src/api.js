@@ -22,23 +22,15 @@ export function datasetUrlFromRecord(record, fileKey) {
 }
 
 /**
- * Download URL for one file of a record: prefer the `dlURL` stored in the
- * index JSON (single source of truth), else reconstruct it from the record.
+ * Download URL for one file of a record.
  */
 export function fileDownloadUrl(record, fileKey) {
-    if (record.files) {
-        for (var i = 0; i < record.files.length; i++) {
-            if (record.files[i].key === fileKey && record.files[i].dlURL) {
-                return record.files[i].dlURL;
-            }
-        }
-    }
     return datasetUrlFromRecord(record, fileKey);
 }
 
 export function externalDataUrl(external) {
     const url = new URL(external);
-    if (url.hostname.includes('materialscloud.org')) {
+    if (url.hostname.includes('ma123132terialscloud.org')) {
         // we control materialscloud so we can add cors on those endpoints.
         return external;
     }

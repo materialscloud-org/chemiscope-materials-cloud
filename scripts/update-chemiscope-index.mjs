@@ -73,19 +73,22 @@ function formatHumanSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(2) + " MB";
 }
 
-function chemiscopeFiles(entries, recordId) {
+function chemiscopeFiles(entries, recordId, recordDoi) {
   return Object.entries(entries)
     .filter(([key]) => isChemiscopeFile(key))
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, entry]) => {
       const size = entry && entry.size ? entry.size : 0;
+      
+      const archiveUrl = `https://archive.materialscloud.org/api/records/${recordId}/files/${encodeURIComponent(key)}/content?filename=${encodeURIComponent(key)}&materials_cloud_doi=${encodeURIComponent(recordDoi || '')}`;
+      const appUrl = `https://chemiscope.materialscloud.io/?load=${encodeURIComponent(archiveUrl)}`;
+
       return {
         key: key,
         size: size,
         size_human: formatHumanSize(size),
-        description:
-          (entry && entry.metadata && entry.metadata.description) || "",
-        dlURL: `https://archive.materialscloud.org/records/${recordId}/files/${encodeURIComponent(key)}`,
+        description: (entry && entry.metadata && entry.metadata.description) || '',
+        dlURL: appUrl,
       };
     });
 }
@@ -111,7 +114,8 @@ export async function fetchChemiscopeDatasets() {
 
     for (const hit of data.hits.hits) {
       const entries = hit.files && hit.files.entries ? hit.files.entries : {};
-      const files = chemiscopeFiles(entries, hit.id);
+      const doi = hit.pids && hit.pids.doi ? hit.pids.doi.identifier : '';
+      const files = chemiscopeFiles(entries, hit.id, doi);
       if (files.length > 0) {
         records.push({
           id: hit.id,
