@@ -11,8 +11,62 @@ import { renderFileButtons } from "./files.js";
 import { loadDataset, loadLocalFile } from "./dataset-loader.js";
 import { renderRecordMeta } from "./meta.js";
 import { resolveEntryRef, setLoadParam } from "./state.js";
+import { teardownVisualizer } from "./visualizer.js";
 
 let datasetRecords = [];
+
+// Identity of the dataset currently displayed in the visualizer, in one of:
+//   'ENTRYID_KEY' for an archive file, a raw URL for a direct external load,
+//   'local' for a dropped file, DEFAULT_DATASET_REF for the bundled example.
+let currentLoadedRef = null;
+
+function recordIdFromRef(ref) {
+  if (!ref) {
+    return null;
+  }
+  var i = ref.indexOf("_");
+  return i === -1 ? ref : ref.slice(0, i);
+}
+
+function showLoadPrompt(message) {
+  var placeholder = document.getElementById("viewer-placeholder");
+  placeholder.querySelector("p").textContent =
+    message || "Select one of the files above to load it.";
+  placeholder.style.display = "block";
+  document.getElementById("viewer-row").style.display = "none";
+}
+
+function hideLoadPrompt() {
+  document.getElementById("viewer-placeholder").style.display = "none";
+  document.getElementById("viewer-row").style.display = "flex";
+}
+
+function loadFile(record, fileKey) {
+  currentLoadedRef = record.id + "_" + fileKey;
+  setLoadParam(record.id, fileKey);
+  hideLoadPrompt();
+  loadDataset(externalDataUrl(fileDownloadUrl(record, fileKey)))
+    .then(hideLoadPrompt)
+    .catch(function (error) {
+      showLoadPrompt(
+        "Could not load " +
+          fileKey +
+          " \u2014 pick one of the files above to retry.",
+      );
+      displayError(error);
+    });
+}
+
+function highlightFile(filesElement, fileKey) {
+  var buttons = filesElement.querySelectorAll(".file-button");
+  for (var i = 0; i < buttons.length; i++) {
+    var nameEl = buttons[i].querySelector(".file-button-name");
+    buttons[i].classList.toggle(
+      "active",
+      nameEl && nameEl.textContent === fileKey,
+    );
+  }
+}
 
 export function populateDatasetSelect(records) {
   datasetRecords = records;
@@ -62,27 +116,19 @@ function selectRecord(record, fileKey, autoLoadFirst) {
   var filesElement = document.getElementById("dataset-files");
   renderRecordMeta(metaElement, record);
   renderFileButtons(filesElement, record, function (key) {
-    setLoadParam(record.id, key);
-    var datasetUrl = fileDownloadUrl(record, key);
-    loadDataset(externalDataUrl(datasetUrl));
+    loadFile(record, key);
   });
   if (fileKey) {
     // Highlight the correct pill and load it (caller updates ?load=)
-    var buttons = filesElement.querySelectorAll(".file-button");
-    for (var i = 0; i < buttons.length; i++) {
-      var nameEl = buttons[i].querySelector(".file-button-name");
-      if (nameEl && nameEl.textContent === fileKey) {
-        buttons[i].classList.add("active");
-      }
-    }
-    setLoadParam(record.id, fileKey);
-    var datasetUrl = fileDownloadUrl(record, fileKey);
-    loadDataset(externalDataUrl(datasetUrl));
+    highlightFile(filesElement, fileKey);
+    loadFile(record, fileKey);
   } else if (autoLoadFirst) {
     var first = filesElement.querySelector(".file-button");
     if (first) {
       first.click();
     }
+  } else {
+    showLoadPrompt("Select one of the files above to load it.");
   }
 }
 
@@ -98,6 +144,10 @@ function handleLocalFile(file) {
   setLoadParam("", null);
   document.getElementById("dataset-files").style.display = "none";
 
+  // Tracking + prompt: we're about to load a local dataset, not from the index
+  currentLoadedRef = "local";
+  hideLoadPrompt();
+
   // Populate meta with custom file info
   var metaElement = document.getElementById("record-meta");
   renderRecordMeta(metaElement, {
@@ -111,9 +161,14 @@ function handleLocalFile(file) {
     },
   });
 
-  loadLocalFile(file).catch(function (error) {
-    displayError(error);
-  });
+  loadLocalFile(file)
+    .then(hideLoadPrompt)
+    .catch(function (error) {
+      showLoadPrompt(
+        "Could not load " + file.name + " \u2014 try another chemiscope file.",
+      );
+      displayError(error);
+    });
 }
 
 export function init() {
@@ -122,22 +177,14 @@ export function init() {
   var hasLoadParam = url.searchParams.get("load") !== null;
   var external = url.searchParams.get("load") || DEFAULT_DATASET_REF;
 
-  var howToLoad = document.getElementById("how-to-load");
-  howToLoad.innerHTML =
-    "<p>To visualize a specific dataset, use the " +
-    "<code>?load=&lt;url&gt;</code> GET parameter in the URL, " +
-    "or pick an archive entry above, then one of its files. " +
-    "[The selector updates <code>?load=&lt;entryid&gt;_&lt;file&gt;</code> so you can share the URL.]</p>" +
-    "<p><code>" +
-    window.location.origin +
-    "?load=https://chemiscope.org/examples/Arginine-Dipeptide.json.gz</code></p>";
-
   select.addEventListener("change", function (event) {
     var option = event.target.selectedOptions[0];
     if (!option || option.value === "") {
       document.getElementById("dataset-files").style.display = "none";
       document.getElementById("record-meta").style.display = "none";
       setLoadParam("", null);
+      teardownVisualizer();
+      showLoadPrompt("Select an archive entry above, then one of its files.");
       return;
     }
     var record = datasetRecords[Number(option.dataset.recordIndex)];
@@ -147,16 +194,20 @@ export function init() {
     renderRecordMeta(document.getElementById("record-meta"), record);
     var filesElement = document.getElementById("dataset-files");
     renderFileButtons(filesElement, record, function (key) {
-      setLoadParam(record.id, key);
-      var datasetUrl = fileDownloadUrl(record, key);
-      loadDataset(externalDataUrl(datasetUrl));
+      loadFile(record, key);
     });
+    // The dropdown moved away from the currently displayed dataset: hide the
+    // visualizer until one of the record's files is actually loaded.
     if (option.dataset.autoLoad === "true") {
       var first = filesElement.querySelector(".file-button");
       if (first) {
         first.click();
       }
     } else {
+      if (recordIdFromRef(currentLoadedRef) !== record.id) {
+        teardownVisualizer();
+        showLoadPrompt("Select one of the files above to load it.");
+      }
       setLoadParam(record.id, null);
     }
     option.dataset.autoLoad = "false";
@@ -210,15 +261,17 @@ export function init() {
       if (parseArchiveFileUrl(external)) {
         pendingArchive = external;
       } else {
-        loadDataset(externalDataUrl(external));
+        currentLoadedRef = external;
+        hideLoadPrompt();
+        loadDataset(externalDataUrl(external))
+          .then(hideLoadPrompt)
+          .catch(function (error) {
+            showLoadPrompt("Could not load the dataset from the URL above.");
+            displayError(error);
+          });
       }
-    } else {
-      howToLoad.style.display = "block";
     }
-  } else {
-    howToLoad.style.display = "block";
   }
-
   fetchChemiscopeDatasets()
     .then(function (records) {
       populateDatasetSelect(records);
@@ -233,9 +286,15 @@ export function init() {
             "Archive entry not in local index \u2014 loading URL directly: " +
               ref.fileKey,
           );
-          loadDataset(externalDataUrl(pendingArchive));
+          currentLoadedRef = pendingArchive;
+          hideLoadPrompt();
+          loadDataset(externalDataUrl(pendingArchive))
+            .then(hideLoadPrompt)
+            .catch(function (error) {
+              showLoadPrompt("Could not load the dataset from the URL above.");
+              displayError(error);
+            });
         }
-        howToLoad.style.display = "none";
         return;
       }
       if (external && !isExternalUrl(external)) {
@@ -243,12 +302,10 @@ export function init() {
         if (resolved) {
           select.selectedIndex = resolved.index + 1;
           selectRecord(resolved.record, resolved.file, false);
-          howToLoad.style.display = "none";
         } else if (hasLoadParam) {
           displayWarning("Unknown entry/file in URL: " + external);
         } else {
           // default dataset is a local file in public/ — load it directly
-          howToLoad.style.display = "none";
           var metaElement = document.getElementById("record-meta");
           renderRecordMeta(metaElement, {
             id: "example",
@@ -260,13 +317,27 @@ export function init() {
                 "You are viewing a bundled example dataset. You can select a Materials Cloud Archive record from the menu above, or drop your own chemiscope file to visualize it.",
             },
           });
-          loadDataset(external);
+          currentLoadedRef = external;
+          hideLoadPrompt();
+          loadDataset(external)
+            .then(hideLoadPrompt)
+            .catch(function (error) {
+              showLoadPrompt("Could not load the example dataset.");
+              displayError(error);
+            });
         }
       }
     })
     .catch(function (error) {
       if (pendingArchive) {
-        loadDataset(externalDataUrl(pendingArchive));
+        currentLoadedRef = pendingArchive;
+        hideLoadPrompt();
+        loadDataset(externalDataUrl(pendingArchive))
+          .then(hideLoadPrompt)
+          .catch(function (err) {
+            showLoadPrompt("Could not load the dataset from the URL above.");
+            displayError(err);
+          });
       } else {
         displayWarning("Could not load the dataset index: " + error.toString());
       }

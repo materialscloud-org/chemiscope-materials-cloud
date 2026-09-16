@@ -6,6 +6,7 @@ body {
   margin: 0;
   font-family: "Open Sans", sans-serif;
   min-height: 100vh;
+  background-color: aliceblue;
 }
 
 /* Alerts */
@@ -50,6 +51,14 @@ body {
   margin: 4px 0;
 }
 
+h1 {
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  margin: 24px auto;
+  line-height: 1.3;
+}
+
 /* Loading spinner */
 #spinner {
   width: 80%;
@@ -61,6 +70,17 @@ body {
 #spinner img {
   display: block;
   margin: auto;
+}
+
+.mc-container {
+  background-color: white;
+  max-width: 1850px;
+  margin: 0 auto 40px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 /* Dataset selector */
@@ -254,6 +274,17 @@ body {
 main {
   margin: 0;
   width: 100%;
+}
+
+#viewer-placeholder {
+  margin: 40px 2em;
+  padding: 60px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  background: #fafafa;
+  border: 2px dashed #aaa;
+  border-radius: 6px;
 }
 
 @media screen and (min-width: 1200px) {

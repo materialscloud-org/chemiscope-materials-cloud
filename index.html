@@ -49,92 +49,99 @@
     <div id="loaded-from-materialscloud" style="display: none"></div>
 
     <!-- Alerts -->
-    <div
-      class="alert alert-danger pop-on-top"
-      id="error-display"
-      style="display: none"
-    >
-      <button
-        class="close-btn"
-        onclick="this.parentElement.style.display = 'none'"
+    <div class="mc-container">
+      <h1>Materials Cloud Chemiscope integration</h1>
+      <div
+        class="alert alert-danger pop-on-top"
+        id="error-display"
+        style="display: none"
       >
-        &times;
-      </button>
-      <p></p>
-      <details>
-        <summary>Backtrace</summary>
+        <button
+          class="close-btn"
+          onclick="this.parentElement.style.display = 'none'"
+        >
+          &times;
+        </button>
         <p></p>
-      </details>
-    </div>
+        <details>
+          <summary>Backtrace</summary>
+          <p></p>
+        </details>
+      </div>
 
-    <div
-      class="alert alert-warning pop-on-top"
-      id="warning-display"
-      style="display: none"
-    >
-      <button
-        class="close-btn"
-        onclick="this.parentElement.style.display = 'none'"
+      <div
+        class="alert alert-warning pop-on-top"
+        id="warning-display"
+        style="display: none"
       >
-        &times;
-      </button>
-      <p></p>
+        <button
+          class="close-btn"
+          onclick="this.parentElement.style.display = 'none'"
+        >
+          &times;
+        </button>
+        <p></p>
+      </div>
+
+      <!-- Dataset selector -->
+      <div class="dataset-toolbar">
+        <label for="dataset-select"
+          >View a Materials Cloud Archive record:</label
+        >
+        <select id="dataset-select" disabled>
+          <option value="">
+            Loading datasets from the Materials Cloud Archive…
+          </option>
+        </select>
+
+        <span class="toolbar-divider">or</span>
+
+        <div class="drop-zone" id="drop-zone" tabindex="0">
+          drop a chemiscope file here
+          <input
+            type="file"
+            id="file-input"
+            accept=".json,.gz,application/json,application/gzip"
+            style="display: none"
+          />
+        </div>
+      </div>
+
+      <div class="record-meta" id="record-meta" style="display: none"></div>
+      <div class="dataset-files" id="dataset-files" style="display: none"></div>
+
+      <!-- Main viewer -->
+      <main id="chemiscope-container">
+        <div id="spinner">
+          <img width="120" src="mcloud_spinner.svg" alt="" />
+          <p id="loading-text"></p>
+          <div class="progress" id="progress" style="display: none">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+        </div>
+
+        <div id="chemiscope-meta"></div>
+
+        <div id="viewer-placeholder" style="display: none">
+          <p>Select a file above to visualize it.</p>
+        </div>
+
+        <div class="viewer-row" id="viewer-row">
+          <div class="viewer-left">
+            <div id="chemiscope-map"></div>
+          </div>
+
+          <div class="viewer-right">
+            <div id="chemiscope-structure"></div>
+            <div id="chemiscope-info"></div>
+          </div>
+        </div>
+
+        <span class="powered-by-chemiscope">
+          Powered by <a href="https://chemiscope.org">chemiscope</a>
+        </span>
+      </main>
     </div>
-
-    <div class="alert alert-info" id="how-to-load" style="display: none"></div>
-
-    <!-- Dataset selector -->
-    <div class="dataset-toolbar">
-      <label for="dataset-select">View a Materials Cloud Archive record:</label>
-      <select id="dataset-select" disabled>
-        <option value="">
-          Loading datasets from the Materials Cloud Archive…
-        </option>
-      </select>
-
-      <span class="toolbar-divider">or</span>
-
-      <div class="drop-zone" id="drop-zone" tabindex="0">
-        drop a chemiscope file here
-        <input
-          type="file"
-          id="file-input"
-          accept=".json,.gz,application/json,application/gzip"
-          style="display: none"
-        />
-      </div>
-    </div>
-
-    <div class="record-meta" id="record-meta" style="display: none"></div>
-    <div class="dataset-files" id="dataset-files" style="display: none"></div>
-
-    <!-- Main viewer -->
-    <main id="chemiscope-container">
-      <div id="spinner">
-        <img width="120" src="mcloud_spinner.svg" alt="" />
-        <p id="loading-text"></p>
-        <div class="progress" id="progress" style="display: none">
-          <div class="progress-bar" id="progress-bar"></div>
-        </div>
-      </div>
-
-      <div id="chemiscope-meta"></div>
-
-      <div class="viewer-row">
-        <div class="viewer-left">
-          <div id="chemiscope-map"></div>
-        </div>
-
-        <div class="viewer-right">
-          <div id="chemiscope-structure"></div>
-          <div id="chemiscope-info"></div>
-        </div>
-      </div>
-
-      <span class="powered-by-chemiscope">
-        Powered by <a href="https://chemiscope.org">chemiscope</a>
-      </span>
-    </main>
 
     <!-- Entry point: ES module (Vite bundles at build, preserves module syntax at dev) -->
     <script type="module" src="/src/main.js"></script>
