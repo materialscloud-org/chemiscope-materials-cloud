@@ -170,11 +170,7 @@
       ],
       "publication_date": "2025-02-26",
       "license": "Creative Commons Attribution 4.0 International",
-      "subjects": [
-        "topological materials",
-        "machine learning",
-        "database"
-      ]
+      "subjects": ["topological materials", "machine learning", "database"]
     },
     "files": [
       {
@@ -517,11 +513,7 @@
       ],
       "publication_date": "2023-03-08",
       "license": "Creative Commons Attribution 4.0 International",
-      "subjects": [
-        "MARVEL",
-        "SNSF",
-        "COSMO-EPFL"
-      ]
+      "subjects": ["MARVEL", "SNSF", "COSMO-EPFL"]
     },
     "files": [
       {
@@ -666,10 +658,7 @@
     "metadata": {
       "title": "Modeling the Ga/As binary system across temperatures and compositions from first principles",
       "description": "Materials composed of elements from the third and fifth columns of the periodic table display a very rich behavior, with the phase diagram usually containing a metallic liquid phase and a polar semiconducting solid. As a consequence, it is very hard to achieve transferable empirical models of interactions between the atoms that can reliably predict their behavior across the temperature and composition range that is relevant to the study of the synthesis and properties of III/V nanostructures and devices. We present a machine-learning potential trained on density functional theory reference data that provides a general-purpose model for the Ga/As system. We provide a series of stringent tests that showcase the accuracy of the potential, and its applicability across the whole binary phase space, computing with ab initio accuracy a large number of finite-temperature properties as well as the location of phase boundaries. We also show how a committee model can be used to reliably determine the uncertainty induced by the limitations of the machine-learning model on its predictions, to identify regions of phase space that are predicted with insufficient accuracy, and to iteratively refine the training set to achieve consistent, reliable modeling.",
-      "creators": [
-        "Imbalzano, Giulio",
-        "Ceriotti, Michele"
-      ],
+      "creators": ["Imbalzano, Giulio", "Ceriotti, Michele"],
       "publication_date": "2021-12-20",
       "license": "Creative Commons Attribution 4.0 International",
       "subjects": [
@@ -798,10 +787,7 @@
     "metadata": {
       "title": "Sensitivity benchmarks of structural representations for atomic-scale machine learning",
       "description": "This dataset contains three sets of CH4 geometries that are distorted along special directions, to reveal the sensitivity to atomic displacements of structural descriptors used in machine-learning applications. The structures are stored in a format that can be visualized on http://chemiscope.org, and contain also DFT-computed energies, as well as the sensitivity analysis of four different kinds of features.",
-      "creators": [
-        "Pozdnyakov, Sergey",
-        "Ceriotti, Michele"
-      ],
+      "creators": ["Pozdnyakov, Sergey", "Ceriotti, Michele"],
       "publication_date": "2021-09-17",
       "license": "Creative Commons Attribution Non Commercial 4.0 International",
       "subjects": [
