@@ -30,7 +30,7 @@ export function fileDownloadUrl(record, fileKey) {
 
 export function externalDataUrl(external) {
     const url = new URL(external);
-    if (url.hostname.includes('ma123132terialscloud.org')) {
+    if (url.hostname.includes('materialscloud.org')) {
         // we control materialscloud so we can add cors on those endpoints.
         return external;
     }
