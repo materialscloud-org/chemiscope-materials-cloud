@@ -32,6 +32,13 @@
 
     <body>
         <!-- mc-header -->
+        <script>
+            var breadcrumbsPath = [
+                { name: 'Work', link: 'https://www.materialscloud.org/work' },
+                { name: 'Tools', link: 'https://www.materialscloud.org/work/tools' },
+                { name: 'Chemiscope', link: null },
+            ];
+        </script>
         <script src="https://cdn.jsdelivr.net/gh/materialscloud-org/mc-header@main/header.js" defer></script>
         <div id="loaded-from-materialscloud" style="display: none"></div>
 
@@ -385,7 +392,7 @@
 
                     element.appendChild(button);
                 });
-                element.style.display = 'block';
+                element.style.display = 'flex';
             }
 
             /**
