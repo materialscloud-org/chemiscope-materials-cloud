@@ -1,0 +1,701 @@
+[
+  {
+    "id": "rr3za-8c528",
+    "url": "https://archive.materialscloud.org/records/rr3za-8c528",
+    "doi": "10.24435/materialscloud:kg-ea",
+    "metadata": {
+      "title": "Optical materials discovery and design with federated databases and machine learning",
+      "description": "Combinatorial and guided screening of materials space with density-functional theory and related approaches has provided a wealth of hypothetical inorganic materials, which are increasingly tabulated in open databases. The OPTIMADE API is a standardised format for representing crystal structures, their measured and computed properties, and the methods for querying and filtering them from remote resources. Currently, the OPTIMADE federation spans over 20 data providers, rendering over 30 million structures accessible in this way, many of which are novel and have only recently been suggested by machine learning-based approaches. In this work, we outline our approach to non-exhaustively screen this dynamic trove of structures for the next-generation of optical materials. By applying MODNet, a neural network-based model for property prediction that has been shown to perform especially well for small materials datasets, within a combined active learning and high-throughput computation framework, we isolate particular structures and chemistries that should be most fruitful for further theoretical calculations and for experimental study as high-refractive-index materials. By making explicit use of automated calculations, federated dataset curation and machine learning, and by releasing these publicly, the workflows presented here can be periodically re-assessed as new databases implement OPTIMADE, and new hypothetical materials are suggested.",
+      "creators": [
+        "Trinquet, Victor",
+        "Evans, Matthew L.",
+        "Hargreaves, Cameron",
+        "De Breuck, Pierre-Paul",
+        "Rignanese, Gian-Marco"
+      ],
+      "publication_date": "2026-03-12",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "electronic structure",
+        "OPTIMADE",
+        "optical materials",
+        "refractive index",
+        "MODNet"
+      ]
+    },
+    "files": [
+      {
+        "key": "dataset_chemiscope.json.gz",
+        "size": 1401448,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "zd984-2ja12",
+    "url": "https://archive.materialscloud.org/records/zd984-2ja12",
+    "doi": "10.24435/materialscloud:f8-1n",
+    "metadata": {
+      "title": "Simultaneous learning of static and dynamic charges",
+      "description": "Long-range interactions and electric response are essential for accurate modeling of condensed-phase systems, but capturing them efficiently remains a challenge for atomistic machine learning. Traditionally, these two phenomena can be represented by static charges, that participate in Coulomb interactions between atoms, and dynamic charges such as atomic polar tensors - aka Born effective charges - describing the response to an external electric field. We critically compare different approaches to learn both types of charges, taking bulk water and water clusters as paradigmatic examples: (1) Learning them independently; (2) Coupling static and dynamic charges based on their physical relationship with a single global coupling constant to account for dielectric screening; (3) Coupled learning with a local, environment-dependent screening factor. In the coupled case, correcting for dielectric screening is essential, yet the common assumption of homogeneous, isotropic screening breaks down in heterogeneous systems such as water clusters. A learned, environment-dependent screening restores high accuracy for the dynamical charges. However, the accuracy gain over independent dynamic predictions is negligible, while the computational cost increases compared to using separate models for static and dynamical charges. This suggests that, despite the formal connection between the two charge types, modeling them independently is the more practical choice for both condensed-phase and isolated cluster systems.",
+      "creators": [
+        "Stärk, Philipp",
+        "Stoß, Henrik",
+        "Langer, Marcel F.",
+        "Rumiantsev, Egor",
+        "Schlaich, Alexander",
+        "Ceriotti, Michele",
+        "Loche, Philip"
+      ],
+      "publication_date": "2026-01-08",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "machine-learning",
+        "interatomic-potentials",
+        "density-functional theory",
+        "atomistic-simulations",
+        "born-effective-charges",
+        "long-range-models"
+      ]
+    },
+    "files": [
+      {
+        "key": "clusters_val.chemiscope.json.gz",
+        "size": 215980,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "c4ene-0mv14",
+    "url": "https://archive.materialscloud.org/records/c4ene-0mv14",
+    "doi": "10.24435/materialscloud:ab-y2",
+    "metadata": {
+      "title": "Massive Atomic Diversity: a compact universal dataset for atomistic machine learning",
+      "description": "The development of machine-learning models for atomic-scale simulations has benefitted tremendously from the large databases of materials and molecular properties computed in the past two decades using electronic-structure calculations. More recently, these databases have made it possible to train \"universal\" models that aim at making accurate predictions for arbitrary atomic geometries and compositions. The construction of many of these databases was however in itself aimed at materials discovery, and therefore targeted primarily to sample stable, or at least plausible, structures and to make the most accurate predictions for each compound – e.g. adjusting the calculation details to the material at hand. Here we introduce a dataset designed specifically to train models that can provide reasonable predictions for arbitrary structures, and that therefore follows a different philosophy. Starting from relatively small sets of stable structures, the dataset is built to contain \"massive atomic diversity\" (MAD) by aggressively distorting these configurations, with near-complete disregard for the stability of the resulting configurations. The electronic structure details, on the other hand, are chosen to maximize consistency rather than to obtain the most accurate prediction for a given structure, or to minimize computational effort. The MAD dataset we present here, despite containing fewer than 100k structures, has already been shown to enable training universal interatomic potentials that are competitive with models trained on traditional datasets with two to three orders of magnitude more structures. We describe in detail the philosophy and details of the construction of the MAD dataset. We also introduce a low-dimensional structural latent space that allows us to compare it with other popular datasets, and that can also be used as a general-purpose materials cartography tool.",
+      "creators": [
+        "Mazitov, Arslan",
+        "Chorna, Sofiia",
+        "Fraux, Guillaume",
+        "Bercx, Marnik",
+        "Pizzi, Giovanni",
+        "De, Sandip",
+        "Ceriotti, Michele"
+      ],
+      "publication_date": "2025-09-25",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "density-functional theory",
+        "machine learning",
+        "interatomic potentials",
+        "dataset",
+        "foundation models",
+        "atomistic simulations"
+      ]
+    },
+    "files": [
+      {
+        "key": "mad-bench.chemiscope.json.gz",
+        "size": 5103058,
+        "description": ""
+      },
+      {
+        "key": "mad-landmarks.chemiscope.json.gz",
+        "size": 494650,
+        "description": ""
+      },
+      {
+        "key": "mad-subsets.chemiscope.json.gz",
+        "size": 5073971,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "zn7cy-7cs67",
+    "url": "https://archive.materialscloud.org/records/zn7cy-7cs67",
+    "doi": "10.24435/materialscloud:wk-qm",
+    "metadata": {
+      "title": "Accelerating the discovery of high-performance nonlinear optical materials using active learning and high-throughput screening",
+      "description": "Due to their abundant use in all-solid-state lasers, nonlinear optical (NLO) crystals are needed for many applications across diverse fields such as medicine and communication. However, because of conflicting requirements, the design of suitable inorganic crystals with strong second-harmonic generation (SHG) has proven to be challenging to both experimentalists and computational scientists. In this work, we leverage a data-driven approach to accelerate the search for high-performance NLO materials. We construct an extensive pool of candidates using databases within the OPTIMADE federation and employ an active learning strategy to gather optimal data while iteratively improving a machine learning model. The result is a publicly accessible dataset of ∼2,200 computed SHG tensors using density-functional perturbation theory. We further assess the performance of machine learning models on SHG prediction and introduce a multi-fidelity correction-learning scheme to refine data accuracy. This study represents a significant step towards data-driven materials discovery in the NLO field and demonstrates how new materials can be screened in an automated fashion.",
+      "creators": ["Trinquet, Victor", "Evans, Matthew L.", "Rignanese, Gian-Marco"],
+      "publication_date": "2025-07-28",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "non-linear optics",
+        "second-harmonic generation",
+        "density-functional theory",
+        "density-functional perturbation theory",
+        "high-throughput",
+        "first principles"
+      ]
+    },
+    "files": [
+      {
+        "key": "dataset_chemiscope.json.gz",
+        "size": 1073306,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "gnv15-27a69",
+    "url": "https://archive.materialscloud.org/records/gnv15-27a69",
+    "doi": "10.24435/materialscloud:zk-gc",
+    "metadata": {
+      "title": "Machine learning on multiple topological materials datasets",
+      "description": "A dataset of 35,608 materials with their topological properties is constructed by combining the density functional theory (DFT) results of Materiae and the Topological Materials Database. Thanks to this, machine-learning approaches are developed to categorize materials into five distinct topological types, with the XGBoost model achieving an impressive 85.2% classification accuracy. By conducting generalization tests on different sub-datasets, differences are identified between the original datasets in terms of topological types, chemical elements, unknown magnetic compounds, and feature space coverage. Their impact on model performance is analyzed. Turning to the simpler binary classification between trivial insulators and nontrivial topological materials, three different approaches are also tested. Key characteristics influencing material topology are identified, with the maximum packing efficiency and the fraction of p valence electrons being highlighted as critical features.",
+      "creators": [
+        "He, Yuqing",
+        "De Breuck, Pierre-Paul",
+        "Weng, Hongming",
+        "Giantomassi, Matteo",
+        "Rignanese, Gian-Marco"
+      ],
+      "publication_date": "2025-02-26",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": ["topological materials", "machine learning", "database"]
+    },
+    "files": [
+      {
+        "key": "topoclass.chemiscope.json.gz",
+        "size": 20722891,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "95z7z-zbr43",
+    "url": "https://archive.materialscloud.org/records/95z7z-zbr43",
+    "doi": "10.24435/materialscloud:fq-k5",
+    "metadata": {
+      "title": "Capturing dichotomic solvent behavior in solute–solvent reactions with neural network potentials",
+      "description": "Simulations of chemical reactivity in condensed phase systems represent an ongoing challenge in computational chemistry, where traditional quantum chemical approaches typically struggle with both the size of the system and the potential complexity of the reaction. Here, we introduce a workflow aimed at efficiently training neural network potentials (NNPs) to explore energy barriers in solution at the hybrid density functional theory level. The computational burden associated with training at the PBE0-D3(BJ) level is bypassed through the use of active and transfer learning techniques, whereas extensive sampling of the transition state region is accelerated by well-tempered metadynamics simulations using multiple time-step integration. These NNPs serve to explore a puzzling solute--solvent reactivity route involving the ring opening of N-enoxyphthalimide experimentally observed in methanol but not in 2,2,2-trifluoroethanol (TFE). This reaction represents a challenging example characterized by intricate hydrogen bonding networks and structurally ambiguous solvent-sensitive transition states. The methodology successfully delivers detailed free energy surfaces and relative energy barriers in quantitative agreement with experiment. These barriers are associated with an ensemble of transition states involving direct participation of up to five solvent molecules. While this picture contrasts with the single transition state structure assumed by current static models, no drastic qualitative difference is observed between the formed hydrogen bonding networks and the number of participating solvent molecules in methanol or TFE. The dichotomy between the two solvents thus essentially arises from an electronic effect (i.e., distinct nucleophilicity) and from the larger conformational entropy contributions in methanol. This example underscores the critical role dynamic simulations at the ab initio levels play in capturing the full complexity of solute-solvent interactions. The files used in our studies are listed below, ensuring reproducibility and providing resources for future studies related to this work.",
+      "creators": [
+        "Célerse, Frédéric",
+        "Juraskova, Veronika",
+        "Das, Shubhajit",
+        "Wodrich, Matthew D.",
+        "Corminboeuf, Clémence"
+      ],
+      "publication_date": "2024-09-09",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": ["machine learning", "molecular dynamics simulation", "free energy", "ERC"]
+    },
+    "files": [
+      {
+        "key": "MeOH-chemiscope.json.gz",
+        "size": 139767190,
+        "description": ""
+      },
+      {
+        "key": "TFE-chemiscope.json.gz",
+        "size": 109539545,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "jw6j6-nn007",
+    "url": "https://archive.materialscloud.org/records/jw6j6-nn007",
+    "doi": "10.24435/materialscloud:jx-a5",
+    "metadata": {
+      "title": "Automated prediction of ground state spin for transition metal complexes",
+      "description": "Predicting the ground state spin of transition metal complexes is a challenging task. Previous attempts have been focused on specific regions of chemical space, whereas a more general automated approach is required to process crystallographic structures for high-throughput quantum chemistry computations. In this work, we developed a method to predict ground state spins of transition metal complexes. We started by constructing a dataset which contains 2,063 first row transition metal complexes taken from experimental crystal structures and their computed ground state spins. This dataset showed large chemical diversity in terms of metals, metal oxidation states, coordination geometries, and ligands. Then, we analyzed the trends between structural and electronic features of the complexes and their ground state spins, and put forward an empirical spin state assignment model. We also used simple descriptors to build a statistical model with >95% predictive accuracy across the board. With this, we provide a practical and automated way to determine the ground state spin of transition metal complex from structure, enabling the high-throughput exploration of crystallographic repositories.",
+      "creators": ["Cho, Yuri", "Laplaza, Ruben", "Vela, Sergi", "Corminboeuf, Clemence"],
+      "publication_date": "2024-07-01",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "spin state",
+        "transition metal complex",
+        "transition metal",
+        "machine learning",
+        "MARVEL",
+        "MARVEL/P2"
+      ]
+    },
+    "files": [
+      {
+        "key": "Ground_state_spin_dataset_chemiscope.json.gz",
+        "size": 1269939,
+        "description": ""
+      },
+      {
+        "key": "Supplementary_dataset_chemiscope.json.gz",
+        "size": 1219835,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "727tj-38v21",
+    "url": "https://archive.materialscloud.org/records/727tj-38v21",
+    "doi": "10.24435/materialscloud:90-b6",
+    "metadata": {
+      "title": "Engineering  frustrated lewis pair active sites in porous organic scaffolds for catalytic CO₂ hydrogenation",
+      "description": "Frustrated Lewis pairs (FLPs), featuring reactive combinations of Lewis acids and Lewis bases, have been utilized for myriad metal-free homogeneous catalytic processes. Immobilizing the active Lewis sites to a solid support, especially to porous scaffolds, has shown great potential to ameliorate FLP catalysis by circumventing some of its inherent drawbacks, such as product separation and catalyst recyclability. Nevertheless, designing immobilized Lewis pair active sites (LPASs) is challenging due to the requirement of placing the donor and acceptor centers in appropriate geometric arrangements while maintaining the necessary chemical environment to perform catalysis, and clear design rules have not yet been established. In this work, we formulate simple guidelines to build highly active LPASs for direct catalytic hydrogenation of CO₂ through a large-scale screening of a diverse library of 25,000 immobilized FLPs. The library is built by introducing boron-containing acidic sites in the vicinity of the existing basic nitrogen sites of the organic linkers of metal-organic frameworks collected in a \"top-down\" fashion from an experimental database. The chemical and geometrical appropriateness of these LPASs for CO₂ hydrogenation is determined by evaluating a series of simple descriptors representing the intrinsic strength (acidity and basicity) of the components and their spatial arrangement in the active sites. Analysis of the leading candidates enables the formulation of pragmatic and experimentally-relevant design principles and they constitute the starting point for further exploration of FLP-based catalysts for the reduction of CO₂.",
+      "creators": [
+        "Das, Shubhajit",
+        "Laplaza, Ruben",
+        "Blaskovits, J. Terence",
+        "Corminboeuf, Clemence"
+      ],
+      "publication_date": "2024-04-17",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "catalysis",
+        "volcano plot",
+        "frustrated lewis pairs",
+        "molecular catalysts",
+        "metal-organic frameworks",
+        "EPFL"
+      ]
+    },
+    "files": [
+      {
+        "key": "I2-BBN-final_chemiscope.json.gz",
+        "size": 26371,
+        "description": ""
+      },
+      {
+        "key": "I2-BMe2-final_chemiscope.json.gz",
+        "size": 4989,
+        "description": ""
+      },
+      {
+        "key": "I2-BPh2-final_chemiscope.json.gz",
+        "size": 55705,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "jnnpw-b8c82",
+    "url": "https://archive.materialscloud.org/records/jnnpw-b8c82",
+    "doi": "10.24435/materialscloud:c0-7z",
+    "metadata": {
+      "title": "Reaction-agnostic featurization of bidentate ligands for Bayesian ridge regression of enantioselectivity",
+      "description": "Chiral ligands are important components in asymmetric homogeneous catalysis, but their synthesis and screening can be both time-consuming and resource-intensive. Data-driven approaches, in contrast to screening procedures based on intuition, have the potential to reduce the time and resources needed for reaction optimization by more rapidly identifying an ideal catalyst. These approaches, however, are often non-transferable and cannot be applied across different reactions. To overcome this drawback, we introduce a general featurization strategy for bidentate ligands that is coupled with an automated feature selection pipeline and Bayesian ridge regression to perform multivariate linear regression modeling. This approach, which is applicable to any reaction, incorporates electronic, steric, and topological features (rigidity/flexibility, branching, geometry, constitution) and is well-suited for early-stage ligand optimization. Using only small datasets, our workflow capably predicts the enantioselectivity of four metal-catalyzed asymmetric reactions. Uncertainty estimates provided by Bayesian ridge regression permit the use of Bayesian optimization to efficiently explore pools of prospective new ligands. Finally, we constructed the BDL-Cu-2023 dataset, comprised of 312 bidentate ligands extracted from the CSD, and screened it with this procedure to identify promising ligand candidates for a challenging asymmetric oxy-alkynylation reaction.",
+      "creators": [
+        "Schoepfer, Alexandre A.",
+        "Laplaza, Ruben",
+        "Wodrich, Matthew D.",
+        "Waser, Jerome",
+        "Corminboeuf, Clemence"
+      ],
+      "publication_date": "2023-12-12",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "catalysis",
+        "homogenous catalysis",
+        "ligands",
+        "bidentate ligands",
+        "NCCR Catalysis",
+        "EPFL"
+      ]
+    },
+    "files": [
+      {
+        "key": "cc_preds-chemiscope.json.gz",
+        "size": 27132,
+        "description": ""
+      },
+      {
+        "key": "cp_preds-chemiscope.json.gz",
+        "size": 22901,
+        "description": ""
+      },
+      {
+        "key": "csd_ligs-chemiscope.json.gz",
+        "size": 748446,
+        "description": ""
+      },
+      {
+        "key": "da_f_preds-chemiscope.json.gz",
+        "size": 28257,
+        "description": ""
+      },
+      {
+        "key": "lit_ligs-chemiscope.json.gz",
+        "size": 267788,
+        "description": ""
+      },
+      {
+        "key": "oa_preds-chemiscope.json.gz",
+        "size": 19261,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "20dc5-mvx03",
+    "url": "https://archive.materialscloud.org/records/20dc5-mvx03",
+    "doi": "10.24435/materialscloud:aa-2w",
+    "metadata": {
+      "title": "Data-driven discovery of organic electronic materials enabled by hybrid top-down/bottom-up design",
+      "description": "The high-throughput molecular exploration and screening of organic electronic materials often starts with either a 'top-down' mining of existing repositories, or the 'bottom-up' assembly of fragments based on predetermined rules and known synthetic templates. In both instances, the datasets used are often produced on a case-by-case basis, and require the high-quality computation of electronic properties and extensive user input: curation in the top-down approach, and the construction of a fragment library and introduction of rules for linking them in the bottom-up approach. Both approaches are time-consuming and require significant computational resources. Here, we generate a top-down set named FORMED consisting of 117K synthesized molecules containing their optimized structures, associated electronic and topological properties and chemical composition, and use these structures as a vast library of molecular building blocks for bottom-up fragment-based materials design. A tool is developed to automate the coupling of these building block units based on their available Csp2-H bonds, thus providing a fundamental link between the two philosophies of dataset construction. Statistical models are trained on this dataset and a subset of the resulting hybrid top-down/bottom-up compounds (selected dimers), which enable on-the-fly prediction of key ground state (frontier molecular orbital gaps) and excited state (S1 and T1 energies) properties from molecular geometries with high accuracy across all known p-block organic compound space. With access to ab initio-quality optical properties in hand, it is possible to apply this bottom-up pipeline using existing compounds as molecular building blocks to any materials design campaign. To illustrate this, we construct and screen over a million molecular candidates (predicted dimers) for efficient intramolecular singlet fission, the leading candidates of which provide insight into the structural features that may promote this multiexciton-generating process.",
+      "creators": ["Blaskovits, J. Terence", "Laplaza, R.", "Vela, S.", "Corminboeuf, C."],
+      "publication_date": "2023-08-10",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "organic molecules",
+        "crystal structures",
+        "optical properties",
+        "photophysical properties",
+        "donor-acceptor copolymers",
+        "MARVEL"
+      ]
+    },
+    "files": [
+      {
+        "key": "Dimers_selected_chemiscope.json.gz",
+        "size": 2131293,
+        "description": ""
+      },
+      {
+        "key": "FORMED_chemiscope.json.gz",
+        "size": 94007012,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "d767c-hne42",
+    "url": "https://archive.materialscloud.org/records/d767c-hne42",
+    "doi": "10.24435/materialscloud:1m-gv",
+    "metadata": {
+      "title": "Reaction-agnostic featurization of bidentate ligands for Bayesian ridge regression of enantioselectivity",
+      "description": "Chiral ligands are important components in asymmetric homogeneous catalysis, but their synthesis and screening can be both time-consuming and resource-intensive. Data-driven approaches, in contrast to screening procedures based on intuition, have the potential to reduce the time and resources needed for reaction optimization by more rapidly identifying an ideal catalyst. These approaches, however, are often non-transferable and cannot be applied across different reactions. To overcome this drawback, we introduce a general featurization strategy for bidentate ligands that is coupled with an automated feature selection pipeline and Bayesian ridge regression to perform multivariate linear regression modeling. This approach, which is applicable to any reaction, incorporates electronic, steric, and topological features (rigidity/flexibility, branching, geometry, constitution) and is well-suited for early-stage ligand optimization. Using only a limited number of points per dataset, our workflow capably predicts the enantioselectivity of four metal-catalyzed asymmetric reactions. Uncertainty estimates provided by Bayesian ridge regression permit the use of Bayesian optimization to efficiently explore pools of prospective new ligands. Using this procedure, a new library of 312 chiral bidentate ligands was screened to identify promising ligand candidates for a challenging asymmetric oxy-alkynylation reaction.",
+      "creators": [
+        "Schoepfer, Alexandre A.",
+        "Laplaza, Ruben",
+        "Wodrich, Matthew D.",
+        "Waser, Jerome",
+        "Corminboeuf, Clemence"
+      ],
+      "publication_date": "2023-07-07",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "catalysis",
+        "homogenous catalysis",
+        "ligands",
+        "bidentate ligands",
+        "NCCR Catalysis",
+        "EPFL"
+      ]
+    },
+    "files": [
+      {
+        "key": "csd_ligs-chemiscope.json.gz",
+        "size": 749270,
+        "description": ""
+      },
+      {
+        "key": "lit_ligs-chemiscope.json.gz",
+        "size": 268318,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "jkaf5-anv04",
+    "url": "https://archive.materialscloud.org/records/jkaf5-anv04",
+    "doi": "10.24435/materialscloud:73-yn",
+    "metadata": {
+      "title": "Modeling high-entropy transition-metal alloys with alchemical compression: dataset HEA25",
+      "description": "Alloys composed of several elements in roughly equimolar composition, often referred to as high-entropy alloys, have long been of interest for their thermodynamics and peculiar mechanical properties, and more recently for their potential application in catalysis. They are a considerable challenge to traditional atomistic modeling, and also to data-driven potentials that for the most part have memory footprint, computational effort and data requirements which scale poorly with the number of elements included. We apply a recently proposed scheme to compress chemical information in a lower-dimensional space, which reduces dramatically the cost of the model with negligible loss of accuracy, to build a potential that can describe 25 d-block transition metals. The model shows semi-quantitative accuracy for prototypical alloys and is remarkably stable when extrapolating to structures outside its training set. In this record, we provide a dataset containing 25,000 structures utilized for fitting the aforementioned potential, with a focus on 25 d-block transition metals, excluding Tc, Cd, Re, Os and Hg.",
+      "creators": [
+        "Lopanitsyna, Nataliya",
+        "Fraux, Guillaume",
+        "Springer, Maximilian A.",
+        "De, Sandip",
+        "Ceriotti, Michele"
+      ],
+      "publication_date": "2023-04-05",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "machine learning",
+        "high-entropy alloys",
+        "neural network potential",
+        "alchemical compression",
+        "MARVEL"
+      ]
+    },
+    "files": [
+      {
+        "key": "HEA25.chemiscope.json.gz",
+        "size": 11764924,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "4g9fy-mq907",
+    "url": "https://archive.materialscloud.org/records/4g9fy-mq907",
+    "doi": "10.24435/materialscloud:xt-cg",
+    "metadata": {
+      "title": "Learning the electronic density of states in condensed matter",
+      "description": "The electronic density of states (DOS) quantifies the distribution of the energy levels that can be occupied by electrons in a quasiparticle picture and is central to modern electronic structure theory. It also underpins the computation and interpretation of experimentally observable material properties such as optical absorption and electrical conductivity. We discuss the challenges inherent in the construction of a machine-learning (ML) framework aimed at predicting the DOS as a combination of local contributions that depend in turn on the geometric configuration of neighbors around each atom, using quasiparticle energy levels from density functional theory as training data. We present a challenging case study that includes configurations of silicon spanning a broad set of thermodynamic conditions, ranging from bulk structures to clusters and from semiconducting to metallic behavior. We compare different approaches to represent the DOS, and the accuracy of predicting quantities such as the Fermi level, the electron density at the Fermi level, or the band energy, either directly or as a side product of the evaluation of the DOS. We find that the performance of the model depends crucially on the resolution chosen to smooth the DOS and that there is a tradeoff to be made between the systematic error associated with the smoothing and the error in the ML model for a specific structure. We find however that the errors are not strongly correlated among similar structures, and so the average DOS over an ensemble of configurations is in very good agreement with the reference electronic structure calculations, despite the large nominal error on individual configurations. We demonstrate the usefulness of this approach by computing the density of states of a large amorphous silicon sample, for which it would be prohibitively expensive to compute the DOS by direct electronic structure calculations and show how the atom-centered decomposition of the DOS that is obtained through our model can be used to extract physical insights into the connections between structural and electronic features.",
+      "creators": ["Ben Mahmoud, Chiheb", "Anelli, Andrea", "Csányi, Gábor", "Ceriotti, Michele"],
+      "publication_date": "2023-03-08",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": ["MARVEL", "SNSF", "COSMO-EPFL"]
+    },
+    "files": [
+      {
+        "key": "4k-aSi_maps_alph_005-chemiscope.json",
+        "size": 1508039,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "fwsfb-c1r63",
+    "url": "https://archive.materialscloud.org/records/fwsfb-c1r63",
+    "doi": "10.24435/materialscloud:xw-5k",
+    "metadata": {
+      "title": "Ranking the synthesizability of hypothetical zeolites with the sorting hat",
+      "description": "Zeolites are nanoporous alumino-silicate frameworks widely used as catalysts and adsorbents. Even though millions of siliceous networks can be generated by computer-aided searches, no new hypothetical framework has yet been synthesized. The needle-in-a-haystack problem of finding promising candidates among large databases of predicted structures has intrigued materials scientists for decades; yet, most work to date on the zeolite problem has been limited to intuitive structural descriptors. Here, we tackle this problem through a rigorous data science scheme—the \"zeolite sorting hat\"—that exploits interatomic correlations to discriminate between real and hypothetical zeolites and to partition real zeolites into compositional classes that guide synthetic strategies for a given hypothetical framework. We find that, regardless of the structural descriptor used by the zeolite sorting hat, there remain hypothetical frameworks that are incorrectly classified as real ones, suggesting that they might be good candidates for synthesis. We seek to minimize the number of such misclassified frameworks by using as complete a structural descriptor as possible, thus focusing on truly viable synthetic targets, while discovering structural features that distinguish real and hypothetical frameworks as an output of the zeolite sorting hat. Further ranking of the candidates can be achieved based on thermodynamic stability and/or their suitability for the desired applications. Based on this workflow, we propose three hypothetical frameworks differing in their molar volume range as the top targets for synthesis, each with a composition suggested by the zeolite sorting hat. Finally, we analyze the behavior of the zeolite sorting hat with a hierarchy of structural descriptors including intuitive descriptors reported in previous studies, finding that intuitive descriptors produce significantly more misclassified hypothetical frameworks, and that more rigorous interatomic correlations point to second-neighbor Si-O distances around 3.2–3.4 Å as the key discriminatory factor.",
+      "creators": [
+        "Helfrecht, Benjamin A.",
+        "Pireddu, Giovanni",
+        "Semino, Rocio",
+        "Auerbach, Scott M.",
+        "Ceriotti, Michele"
+      ],
+      "publication_date": "2022-10-25",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": ["MARVEL", "EPFL", "ERC", "H2020", "machine learning", "zeolites"]
+    },
+    "files": [
+      {
+        "key": "svm-pcovr-ch_candidates.chemiscope.json.gz",
+        "size": 7746186,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "xf0y8-0g933",
+    "url": "https://archive.materialscloud.org/records/xf0y8-0g933",
+    "doi": "10.24435/materialscloud:36-ff",
+    "metadata": {
+      "title": "Predicting hot-electron free energies from ground-state data",
+      "description": "Machine-learning potentials are usually trained on the ground-state, Born-Oppenheimer energy surface, which depends exclusively on the atomic positions and not on the simulation temperature. This disregards the effect of thermally excited electrons, that is important in metals, and essential to the description of warm dense matter. An accurate physical description of these effects requires that the nuclei move on a temperature-dependent electronic free energy. We propose a method to obtain machine-learning predictions of this free energy at an arbitrary electron temperature using exclusively training data from ground-state calculations, avoiding the need to train temperature-dependent potentials, and benchmark it on metallic liquid hydrogen at the conditions of the core of gas giants and brown dwarfs. This Letter demonstrates the advantages of hybrid schemes that use physical consideration to combine machine-learning predictions, providing a blueprint for the development of similar approaches that extend the reach of atomistic modeling by removing the barrier between physics and data-driven methodologies. This record contains the raw outputs of the DFT calculations done on the training set. These files are denoted by the \"training set folder #*\" description. The record also contains a minimal working example showing the ML workflow for training the data and how to run the MD simulations. We include the training data in the format of XYZ files for the structures and NumPy arrays for the DFT energies, forces and DOS. We also provide a Chemiscope visualisation file of the training set.",
+      "creators": ["Ben Mahmoud, Chiheb", "Grasselli, Federico", "Ceriotti, Michele"],
+      "publication_date": "2022-10-03",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "SNSF",
+        "MARVEL",
+        "Marie Curie Fellowship",
+        "liquid hydrogen",
+        "warm dense matter",
+        "hot electrons",
+        "machine learning"
+      ]
+    },
+    "files": [
+      {
+        "key": "PCA-map-liquidH-chemiscope.json.gz",
+        "size": 166342849,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "x12qf-mr670",
+    "url": "https://archive.materialscloud.org/records/x12qf-mr670",
+    "doi": "10.24435/materialscloud:v4-sn",
+    "metadata": {
+      "title": "OSCAR: An extensive repository of chemically and functionally diverse organocatalysts",
+      "description": "We introduce OSCAR, a repository of thousands of experimentally derived (OSCAR seed and CSD-extracted) and combinatorially enriched organocatalysts (OSCAR!(NHC) and OSCAR!(DHBD) for N-heterocyclic carbenes and hydrogen bond donors, respectively). The structures and corresponding stereoelectronic properties are publicly available and constitute the starting point to build generative and predictive models for organocatalyst performance.",
+      "creators": [
+        "Gallarati, Simone",
+        "van Gerwen, Puck",
+        "Laplaza, Ruben",
+        "Vela, Sergi",
+        "Fabrizio, Alberto",
+        "Corminboeuf, Clemence"
+      ],
+      "publication_date": "2022-08-30",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "catalysis",
+        "organocatalysis",
+        "electronic structure",
+        "organic molecules",
+        "carbenes",
+        "NCCR Catalysis"
+      ]
+    },
+    "files": [
+      {
+        "key": "DLPNO-CCSD-chemiscope.json.gz",
+        "size": 1460157,
+        "description": ""
+      },
+      {
+        "key": "OSCAR_DHBD_DFT-chemiscope.json.gz",
+        "size": 5289337,
+        "description": ""
+      },
+      {
+        "key": "OSCAR_NHC-chemiscope.json.gz",
+        "size": 6451685,
+        "description": ""
+      },
+      {
+        "key": "Seed_CSD-chemiscope.json.gz",
+        "size": 3048361,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "dfnmr-0r807",
+    "url": "https://archive.materialscloud.org/records/dfnmr-0r807",
+    "doi": "10.24435/materialscloud:tb-dq",
+    "metadata": {
+      "title": "Modeling the Ga/As binary system across temperatures and compositions from first principles",
+      "description": "Materials composed of elements from the third and fifth columns of the periodic table display a very rich behavior, with the phase diagram usually containing a metallic liquid phase and a polar semiconducting solid. As a consequence, it is very hard to achieve transferable empirical models of interactions between the atoms that can reliably predict their behavior across the temperature and composition range that is relevant to the study of the synthesis and properties of III/V nanostructures and devices. We present a machine-learning potential trained on density functional theory reference data that provides a general-purpose model for the Ga/As system. We provide a series of stringent tests that showcase the accuracy of the potential, and its applicability across the whole binary phase space, computing with ab initio accuracy a large number of finite-temperature properties as well as the location of phase boundaries. We also show how a committee model can be used to reliably determine the uncertainty induced by the limitations of the machine-learning model on its predictions, to identify regions of phase space that are predicted with insufficient accuracy, and to iteratively refine the training set to achieve consistent, reliable modeling.",
+      "creators": ["Imbalzano, Giulio", "Ceriotti, Michele"],
+      "publication_date": "2021-12-20",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "Molecular dynamics simulation",
+        "Gallium arsenide",
+        "Neural network potential",
+        "GaAs",
+        "SNSF",
+        "MARVEL"
+      ]
+    },
+    "files": [
+      {
+        "key": "gaas-dataset.chemiscope.json.gz",
+        "size": 13670763,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "gxcgf-rkh55",
+    "url": "https://archive.materialscloud.org/records/gxcgf-rkh55",
+    "doi": "10.24435/materialscloud:9e-3j",
+    "metadata": {
+      "title": "Structure-property maps with kernel principal covariates regression",
+      "description": "Data analyses based on linear methods constitute the simplest, most robust, and transparent approaches to the automatic processing of large amounts of data for building supervised or unsupervised machine learning models. Principal covariates regression (PCovR) is an underappreciated method that interpolates between principal component analysis and linear regression, and can be used to conveniently reveal structure-property relations in terms of simple-to-interpret, low-dimensional maps. Here we introduce a kernelized version of PCovR and a sparsified extension, and demonstrate the performance of this approach in revealing and predicting structure-property relations in chemistry and materials science, showing a variety of examples including elemental carbon, porous silicate frameworks, organic molecules, amino acid conformers, and molecular materials.",
+      "creators": [
+        "Helfrecht, Benjamin A.",
+        "Cersonsky, Rose K.",
+        "Fraux, Guillaume",
+        "Ceriotti, Michele"
+      ],
+      "publication_date": "2021-12-20",
+      "license": "Creative Commons Attribution 4.0 International",
+      "subjects": [
+        "machine learning",
+        "materials science",
+        "dimensionality reduction",
+        "kernel methods",
+        "MaX",
+        "SNSF",
+        "ERC",
+        "EPFL",
+        "MARVEL/DD1"
+      ]
+    },
+    "files": [
+      {
+        "key": "arginine-kpcovr-0.55-chemiscope.json.gz",
+        "size": 1163153,
+        "description": ""
+      },
+      {
+        "key": "azaphenacenes-kpcovr-0.65-chemiscope.json.gz",
+        "size": 287647,
+        "description": ""
+      },
+      {
+        "key": "C-VII-kpcovr-0.0-chemiscope.json.gz",
+        "size": 1632157,
+        "description": ""
+      },
+      {
+        "key": "C-VII-kpcovr-0.5-chemiscope.json.gz",
+        "size": 1634315,
+        "description": ""
+      },
+      {
+        "key": "C-VII-kpcovr-1.0-chemiscope.json.gz",
+        "size": 1631830,
+        "description": ""
+      },
+      {
+        "key": "CSD-1000R-kpcovr-0.5-chemiscope.json.gz",
+        "size": 1082067,
+        "description": ""
+      },
+      {
+        "key": "DEEM-global-kpcovr-0.5-chemiscope.json.gz",
+        "size": 3159070,
+        "description": ""
+      },
+      {
+        "key": "DEEM-local-kpcovr-0.5-chemiscope.json.gz",
+        "size": 771946,
+        "description": ""
+      },
+      {
+        "key": "qm9-12PC-kpcovr-0.5-chemiscope.json.gz",
+        "size": 3418447,
+        "description": ""
+      },
+      {
+        "key": "qm9-12PC-kpcovr-1.0-chemiscope.json.gz",
+        "size": 3415861,
+        "description": ""
+      }
+    ]
+  },
+  {
+    "id": "xk012-g6s95",
+    "url": "https://archive.materialscloud.org/records/xk012-g6s95",
+    "doi": "10.24435/materialscloud:7z-g6",
+    "metadata": {
+      "title": "Sensitivity benchmarks of structural representations for atomic-scale machine learning",
+      "description": "This dataset contains three sets of CH4 geometries that are distorted along special directions, to reveal the sensitivity to atomic displacements of structural descriptors used in machine-learning applications. The structures are stored in a format that can be visualized on http://chemiscope.org, and contain also DFT-computed energies, as well as the sensitivity analysis of four different kinds of features.",
+      "creators": ["Pozdnyakov, Sergey", "Ceriotti, Michele"],
+      "publication_date": "2021-09-17",
+      "license": "Creative Commons Attribution Non Commercial 4.0 International",
+      "subjects": [
+        "DFT",
+        "methane",
+        "sensitivity",
+        "representations",
+        "machine learning",
+        "MARVEL",
+        "SNSF",
+        "ERC"
+      ]
+    },
+    "files": [
+      {
+        "key": "asymmetric_ch4.chemiscope.json.gz",
+        "size": 63974,
+        "description": ""
+      },
+      {
+        "key": "degenerate_ch4.chemiscope.json.gz",
+        "size": 59496,
+        "description": ""
+      },
+      {
+        "key": "symmetric_ch4.chemiscope.json.gz",
+        "size": 42272,
+        "description": ""
+      }
+    ]
+  }
+]

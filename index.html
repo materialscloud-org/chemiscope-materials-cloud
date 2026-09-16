@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="Interactive data visualization for materials and molecular databases. Correlate atomic structures and their properties, either online or with a portable app."
+        />
+        <title>Chemiscope</title>
+        <link rel="icon" type="image/png" href="chemiscope-icon.png" sizes="32x32" />
+
+        <!-- Plausible analytics -->
+        <script type="text/javascript">
+            var header = document.getElementsByTagName('head')[0];
+            var plausible = document.createElement('script');
+            var domain_name = window.location.hostname;
+            plausible.async = '';
+            plausible.defer = '';
+            plausible.dataset['domain'] = domain_name;
+            plausible.src = 'https://plausible.io/js/plausible.js';
+            header.appendChild(plausible);
+        </script>
+
+        <!-- Dependencies from CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chemiscope@latest/dist/chemiscope.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako_inflate.min.js"></script>
+
+        <link rel="stylesheet" href="chemiscope.css" />
+    </head>
+
+    <body>
+        <!-- mc-header -->
+        <script src="https://cdn.jsdelivr.net/gh/materialscloud-org/mc-header@main/header.js" defer></script>
+        <div id="loaded-from-materialscloud" style="display: none"></div>
+
+        <!-- Alerts -->
+        <div class="alert alert-danger pop-on-top" id="error-display" style="display: none">
+            <button class="close-btn" onclick="this.parentElement.style.display = 'none'">&times;</button>
+            <p></p>
+            <details>
+                <summary>Backtrace</summary>
+                <p></p>
+            </details>
+        </div>
+
+        <div class="alert alert-warning pop-on-top" id="warning-display" style="display: none">
+            <button class="close-btn" onclick="this.parentElement.style.display = 'none'">&times;</button>
+            <p></p>
+        </div>
+
+        <div class="alert alert-info" id="how-to-load" style="display: none"></div>
+
+        <!-- Dataset selector -->
+        <div class="dataset-toolbar">
+            <label for="dataset-select">Dataset:</label>
+            <select id="dataset-select" disabled>
+                <option value="">Loading datasets from the Materials Cloud Archive…</option>
+            </select>
+        </div>
+
+        <div class="record-meta" id="record-meta" style="display: none"></div>
+        <div class="dataset-files" id="dataset-files" style="display: none"></div>
+
+        <!-- Main viewer -->
+        <main id="chemiscope-container">
+            <div id="spinner">
+                <img width="120" src="mcloud_spinner.svg" alt="" />
+                <p id="loading-text"></p>
+            </div>
+
+            <div id="chemiscope-meta"></div>
+
+            <div class="viewer-row">
+                <div class="viewer-left">
+                    <div id="chemiscope-map"></div>
+                </div>
+
+                <div class="viewer-right">
+                    <div id="chemiscope-structure"></div>
+                    <div id="chemiscope-info"></div>
+                </div>
+            </div>
+
+            <span class="powered-by-chemiscope"> Powered by <a href="https://chemiscope.org">chemiscope</a> </span>
+        </main>
+
+        <script>
+            var currentVisualizer = null;
+            var datasetRecords = [];
+
+            var MCA_API = 'https://archive.materialscloud.org/api/records';
+            var MCA_QUERY = 'files.entries.key:*chemiscope*';
+
+            var DEFAULT_DATASET_REF = 'gxcgf-rkh55_arginine-kpcovr-0.55-chemiscope.json.gz';
+
+            function isChemiscopeFile(key) {
+                return key.toLowerCase().includes('chemiscope') && /\.json(\.gz)?$/i.test(key);
+            }
+
+            function externalDataUrl(external) {
+                const url = new URL(external);
+                if (url.hostname.includes('materialscloud.org')) {
+                    return external;
+                }
+                return 'https://cors.materialscloud.org/' + external;
+            }
+
+            function displayError(error) {
+                const display = document.getElementById('error-display');
+                display.style.display = 'block';
+                display.getElementsByTagName('p')[0].innerText = error.toString();
+                const stacktrace = display.getElementsByTagName('details')[0];
+                stacktrace.getElementsByTagName('p')[0].innerText = error.stack || '';
+            }
+
+            function displayWarning(message, timeout) {
+                if (timeout === undefined) timeout = 4000;
+                const display = document.getElementById('warning-display');
+                display.style.display = 'block';
+                display.getElementsByTagName('p')[0].innerText = message;
+                if (timeout > 0) {
+                    setTimeout(function () {
+                        display.style.display = 'none';
+                    }, timeout);
+                }
+            }
+
+            async function readJSON(buffer) {
+                var bytes = new Uint8Array(buffer);
+                var text;
+
+                if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
+                    document.getElementById('loading-text').innerText += '\nDecompressing \u2026';
+                    await new Promise(function (r) {
+                        setTimeout(r, 10);
+                    });
+                    try {
+                        text = pako.inflate(bytes, { to: 'string' });
+                    } catch (error) {
+                        throw Error('Failed to decompress the data: the file is too big or invalid');
+                    }
+                } else {
+                    text = new TextDecoder('utf-8').decode(buffer);
+                }
+
+                document.getElementById('loading-text').innerText += '\nParsing JSON \u2026';
+                await new Promise(function (r) {
+                    setTimeout(r, 10);
+                });
+
+                return JSON.parse(text.replace(/\bNaN\b/g, '"***NaN***"'), function (key, value) {
+                    return value === '***NaN***' ? NaN : value;
+                });
+            }
+
+            async function loadDataset(url) {
+                // show the spinner on every load and tear down the previous viewer
+                document.getElementById('spinner').style.display = 'block';
+                document.getElementById('loading-text').innerText = '';
+                if (currentVisualizer !== undefined) {
+                    try {
+                        currentVisualizer.remove();
+                    } catch (e) {}
+                    currentVisualizer = undefined;
+                }
+
+                var response = await fetch(url);
+                if (!response.ok) {
+                    throw Error("unable to load file at '" + url + "'");
+                }
+
+                var contentLength = +response.headers.get('Content-Length');
+
+                var formatSize = function (size) {
+                    return (size / (1024 * 1024)).toFixed(2) + ' MiB';
+                };
+
+                var buffer;
+                if (contentLength === 0) {
+                    document.getElementById('loading-text').innerText = 'Loading data: unknown size \u2026';
+                    buffer = await response.arrayBuffer();
+                    if (buffer.byteLength === 0) {
+                        if (url.startsWith('https://cors.materialscloud.org/')) {
+                            throw Error("unable to load file at '" + url + "'");
+                        }
+                    }
+                } else {
+                    if (contentLength / (1024 * 1024) > 300) {
+                        displayWarning(
+                            'You are trying to load a very large file (' +
+                                formatSize(contentLength) +
+                                '), JavaScript might not have access to enough memory to process it'
+                        );
+                    }
+
+                    buffer = new ArrayBuffer(contentLength);
+                    var data = new Uint8Array(buffer);
+                    var reader = response.body.getReader();
+                    var receivedLength = 0;
+
+                    var load = async function () {
+                        while (true) {
+                            var result = await reader.read();
+                            if (result.done) break;
+                            data.set(result.value, receivedLength);
+                            receivedLength += result.value.length;
+                        }
+                    };
+
+                    var display = async function () {
+                        while (true) {
+                            document.getElementById('loading-text').innerText =
+                                'Loading data: ' + formatSize(receivedLength) + ' out of ' + formatSize(contentLength) + ' \u2026';
+                            await new Promise(function (r) {
+                                setTimeout(r, 100);
+                            });
+                        }
+                    };
+
+                    await Promise.any([load(), display()]);
+                }
+
+                var dataset = await readJSON(buffer);
+                var config = {
+                    map: 'chemiscope-map',
+                    info: 'chemiscope-info',
+                    meta: 'chemiscope-meta',
+                    structure: 'chemiscope-structure',
+                    settings: dataset.settings || {},
+                };
+
+                document.getElementById('loading-text').innerText += '\nCreating chemiscope visualizer \u2026';
+                await new Promise(function (r) {
+                    setTimeout(r, 10);
+                });
+
+                var visualizer = await Chemiscope.DefaultVisualizer.load(config, dataset);
+
+                visualizer.structure.positionSettingsModal = function (rect) {
+                    var structureRect = document.getElementById('chemiscope-structure').getBoundingClientRect();
+                    return { top: structureRect.top, left: structureRect.left - rect.width - 25 };
+                };
+
+                visualizer.map.positionSettingsModal = function (rect) {
+                    var mapRect = document.getElementById('chemiscope-map').getBoundingClientRect();
+                    var left;
+                    if (window.innerWidth < 1400) {
+                        left = window.innerWidth - rect.width - 10;
+                    } else {
+                        left = mapRect.left + mapRect.width + 25;
+                    }
+                    return { top: mapRect.top, left: left };
+                };
+
+                currentVisualizer = visualizer;
+                document.getElementById('spinner').style.display = 'none';
+            }
+
+            function showLoadedFile(external) {
+                var url = new URL(external);
+
+                var params = new URLSearchParams(window.location.search);
+                var minimalMode = params.get('minimal') === 'true';
+            }
+
+            function datasetUrlFromRecord(record, fileKey) {
+                return (
+                    MCA_API +
+                    '/' +
+                    record.id +
+                    '/files/' +
+                    encodeURIComponent(fileKey) +
+                    '/content?filename=' +
+                    encodeURIComponent(fileKey) +
+                    '&materials_cloud_doi=' +
+                    encodeURIComponent(record.doi || '')
+                );
+            }
+
+            function formatHumanSize(bytes) {
+                if (!Number.isFinite(bytes) || bytes <= 0) {
+                    return '';
+                }
+                if (bytes < 1024 * 1024) {
+                    return (bytes / 1024).toFixed(1) + ' KB';
+                }
+                return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            }
+
+            function renderRecordMeta(element, record) {
+                element.innerHTML = '';
+                var meta = record.metadata || {};
+
+                var title = document.createElement('h2');
+                title.className = 'record-meta-title';
+                var link = document.createElement('a');
+                link.href = record.url || 'https://archive.materialscloud.org/records/' + record.id;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.textContent = meta.title || record.id;
+                title.appendChild(link);
+                if (record.doi) {
+                    var doi = document.createElement('span');
+                    doi.className = 'record-meta-doi';
+                    doi.innerHTML = 'doi:&nbsp;<a href="https://doi.org/' + record.doi + '">' + record.doi + '</a>';
+                    title.appendChild(doi);
+                }
+                element.appendChild(title);
+
+                var details = [];
+                if (meta.publication_date) {
+                    details.push(new Date(meta.publication_date).getUTCFullYear());
+                }
+                if (meta.creators && meta.creators.length > 0) {
+                    details.push(meta.creators.join(', '));
+                }
+                if (meta.license) {
+                    details.push(meta.license);
+                }
+                if (details.length > 0) {
+                    var line = document.createElement('div');
+                    line.className = 'record-meta-line';
+                    line.textContent = details.join(' · ');
+                    element.appendChild(line);
+                }
+
+                if (meta.description) {
+                    var description = document.createElement('div');
+                    description.className = 'record-meta-description';
+                    if (meta.description.length > 400) {
+                        var short = document.createElement('p');
+                        short.textContent = meta.description.slice(0, 400) + '…';
+                        description.appendChild(short);
+                        var more = document.createElement('details');
+                        var summary = document.createElement('summary');
+                        summary.textContent = 'Read more';
+                        var full = document.createElement('p');
+                        full.textContent = meta.description;
+                        more.appendChild(summary);
+                        more.appendChild(full);
+                        description.appendChild(more);
+                    } else {
+                        var single = document.createElement('p');
+                        single.textContent = meta.description;
+                        description.appendChild(single);
+                    }
+                    element.appendChild(description);
+                }
+
+                element.style.display = 'block';
+            }
+
+            function renderFileButtons(element, record) {
+                element.innerHTML = '';
+                record.files.forEach(function (file) {
+                    var button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'file-button';
+
+                    var name = document.createElement('span');
+                    name.className = 'file-button-name';
+                    name.textContent = file.key;
+                    button.appendChild(name);
+
+                    if (file.size > 0) {
+                        var size = document.createElement('span');
+                        size.className = 'file-button-size';
+                        size.textContent = formatHumanSize(file.size);
+                        button.appendChild(size);
+                    }
+
+                    button.addEventListener('click', function () {
+                        var active = element.querySelectorAll('.file-button.active');
+                        for (var i = 0; i < active.length; i++) {
+                            active[i].classList.remove('active');
+                        }
+                        button.classList.add('active');
+                        setLoadParam(record.id, file.key);
+                        var datasetUrl = datasetUrlFromRecord(record, file.key);
+                        showLoadedFile(datasetUrl);
+                        loadDataset(externalDataUrl(datasetUrl));
+                    });
+
+                    element.appendChild(button);
+                });
+                element.style.display = 'block';
+            }
+
+            /**
+             * Load the cached index written by
+             * scripts/update-chemiscope-index.mjs (see public/chemiscope-datasets.json).
+             */
+            async function fetchChemiscopeDatasets() {
+                var response = await fetch('chemiscope-datasets.json');
+                if (!response.ok) {
+                    throw Error('HTTP ' + response.status);
+                }
+                return await response.json();
+            }
+
+            /**
+             * Fallback: query the Materials Cloud Archive directly for every
+             * record that contains a `*.chemiscope.json.gz` file.
+             */
+            async function fetchChemiscopeDatasetsLive() {
+                var records = [];
+                var page = 1;
+                while (true) {
+                    var url = MCA_API + '?q=' + encodeURIComponent(MCA_QUERY) + '&size=100&page=' + page + '&sort=updated-desc';
+                    var response = await fetch(url);
+                    if (!response.ok) {
+                        throw Error('search failed with HTTP ' + response.status);
+                    }
+                    var data = await response.json();
+                    for (var i = 0; i < data.hits.hits.length; i++) {
+                        var hit = data.hits.hits[i];
+                        var entries = hit.files && hit.files.entries ? hit.files.entries : {};
+                        var files = [];
+                        Object.keys(entries)
+                            .filter(isChemiscopeFile)
+                            .sort()
+                            .forEach(function (key) {
+                                files.push({
+                                    key: key,
+                                    size: entries[key] && entries[key].size ? entries[key].size : 0,
+                                    description: (entries[key] && entries[key].metadata && entries[key].metadata.description) || '',
+                                });
+                            });
+                        if (files.length > 0) {
+                            var metadata = hit.metadata || {};
+                            records.push({
+                                id: hit.id,
+                                url: (hit.links && hit.links.self_html) || 'https://archive.materialscloud.org/records/' + hit.id,
+                                doi: hit.pids && hit.pids.doi ? hit.pids.doi.identifier : '',
+                                metadata: {
+                                    title: metadata.title || '',
+                                    description: (metadata.description || '')
+                                        .replace(/<[^>]*>/g, ' ')
+                                        .replace(/&nbsp;/g, ' ')
+                                        .replace(/&amp;/g, '&')
+                                        .replace(/&lt;/g, '<')
+                                        .replace(/&gt;/g, '>')
+                                        .replace(/&quot;/g, '"')
+                                        .replace(/&#39;|&apos;/g, "'")
+                                        .replace(/\s+/g, ' ')
+                                        .trim(),
+                                    creators: (metadata.creators || [])
+                                        .map(function (creator) {
+                                            return creator.person_or_org && creator.person_or_org.name;
+                                        })
+                                        .filter(Boolean),
+                                    publication_date: metadata.publication_date || '',
+                                    license: (metadata.rights && metadata.rights[0] && metadata.rights[0].title && metadata.rights[0].title.en) || '',
+                                    subjects: (metadata.subjects || [])
+                                        .map(function (subject) {
+                                            return subject.subject;
+                                        })
+                                        .filter(Boolean),
+                                },
+                                files: files,
+                            });
+                        }
+                    }
+                    if (page * 100 >= data.hits.total) {
+                        break;
+                    }
+                    page += 1;
+                }
+                return records;
+            }
+
+            function populateDatasetSelect(records) {
+                datasetRecords = records;
+                var select = document.getElementById('dataset-select');
+                select.innerHTML = '';
+                select.disabled = records.length === 0;
+
+                if (records.length === 0) {
+                    select.appendChild(new Option('No chemiscope datasets found', ''));
+                    return;
+                }
+
+                select.appendChild(new Option('— select an archive entry —', ''));
+                for (var i = 0; i < records.length; i++) {
+                    var record = records[i];
+                    var meta = record.metadata || {};
+                    var count = record.files.length + ' file' + (record.files.length === 1 ? '' : 's');
+                    var tag = record.doi || record.id;
+                    var label = (meta.title || record.id) + ' (' + count + ') [' + tag + ']';
+                    var option = new Option(label, record.id);
+                    option.dataset.recordIndex = i;
+                    select.appendChild(option);
+                }
+            }
+
+            function isExternalUrl(value) {
+                return value.indexOf('://') !== -1;
+            }
+
+            /**
+             * Resolve a `ENTRYID` or `ENTRYID_FILE` reference (from the `?load=`
+             * search param) against the dataset index.
+             */
+            function resolveEntryRef(ref, records) {
+                for (var i = 0; i < records.length; i++) {
+                    var record = records[i];
+                    if (ref === record.id) {
+                        return { record: record, index: i, file: null };
+                    }
+                    if (ref.indexOf(record.id + '_') === 0) {
+                        var fileKey = ref.slice(record.id.length + 1);
+                        for (var j = 0; j < record.files.length; j++) {
+                            if (record.files[j].key === fileKey) {
+                                return { record: record, index: i, file: fileKey };
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function setLoadParam(recordId, fileKey) {
+                var url = new URL(window.location.href);
+                if (fileKey) {
+                    url.searchParams.set('load', recordId + '_' + fileKey);
+                } else {
+                    url.searchParams.delete('load');
+                }
+                history.replaceState(null, '', url.toString());
+            }
+
+            function highlightFileButton(container, fileKey) {
+                var buttons = container.querySelectorAll('.file-button');
+                for (var i = 0; i < buttons.length; i++) {
+                    var name = buttons[i].querySelector('.file-button-name');
+                    if (name && name.textContent === fileKey) {
+                        buttons[i].classList.add('active');
+                    } else {
+                        buttons[i].classList.remove('active');
+                    }
+                }
+            }
+
+            function selectRecord(record, fileKey, autoLoadFirst) {
+                var metaElement = document.getElementById('record-meta');
+                var filesElement = document.getElementById('dataset-files');
+                renderRecordMeta(metaElement, record);
+                renderFileButtons(filesElement, record);
+                if (fileKey) {
+                    highlightFileButton(filesElement, fileKey);
+                    setLoadParam(record.id, fileKey);
+                    var datasetUrl = datasetUrlFromRecord(record, fileKey);
+                    showLoadedFile(datasetUrl);
+                    loadDataset(externalDataUrl(datasetUrl));
+                } else if (autoLoadFirst) {
+                    var first = filesElement.querySelector('.file-button');
+                    if (first) first.click();
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                window.onerror = function (msg, url, line, col, error) {
+                    if (error !== undefined) displayError(error);
+                };
+                window.onunhandledrejection = function (error) {
+                    displayError(error.reason);
+                };
+
+                var select = document.getElementById('dataset-select');
+                var url = new URL(window.location.href);
+                var hasLoadParam = url.searchParams.get('load') !== null;
+                var external = url.searchParams.get('load') || DEFAULT_DATASET_REF;
+
+                var howToLoad = document.getElementById('how-to-load');
+                howToLoad.innerHTML =
+                    '<p>To visualize a specific dataset, use the ' +
+                    '<code>?load=&lt;url&gt;</code> GET parameter in the URL, ' +
+                    'or pick an archive entry above, then one of its files. ' +
+                    '[The selector updates <code>?load=&lt;entryid&gt;_&lt;file&gt;</code> so you can share the URL.]</p>' +
+                    '<p><code>' +
+                    window.location.origin +
+                    '?load=https://chemiscope.org/examples/Arginine-Dipeptide.json.gz</code></p>';
+
+                select.addEventListener('change', function (event) {
+                    var option = event.target.selectedOptions[0];
+                    if (!option || option.value === '') {
+                        document.getElementById('dataset-files').style.display = 'none';
+                        document.getElementById('record-meta').style.display = 'none';
+                        setLoadParam('', null);
+                        return;
+                    }
+                    var record = datasetRecords[Number(option.dataset.recordIndex)];
+                    if (!record) {
+                        return;
+                    }
+                    renderRecordMeta(document.getElementById('record-meta'), record);
+                    var filesElement = document.getElementById('dataset-files');
+                    renderFileButtons(filesElement, record);
+                    if (option.dataset.autoLoad === 'true') {
+                        var first = filesElement.querySelector('.file-button');
+                        if (first) first.click();
+                    } else {
+                        setLoadParam(record.id, null);
+                    }
+                    option.dataset.autoLoad = 'false';
+                });
+
+                function loadFallbackExample() {
+                    var example = 'https://chemiscope.org/examples/Arginine-Dipeptide.json.gz';
+                    howToLoad.style.display = 'block';
+                    showLoadedFile(example);
+                    loadDataset(externalDataUrl(example));
+                }
+
+                if (external) {
+                    if (isExternalUrl(external)) {
+                        showLoadedFile(external);
+                        loadDataset(externalDataUrl(external));
+                    } else {
+                        howToLoad.style.display = 'block';
+                    }
+                } else {
+                    howToLoad.style.display = 'block';
+                }
+
+                fetchChemiscopeDatasets()
+                    .catch(function () {
+                        // cached index missing/outdated: query the archive directly
+                        return fetchChemiscopeDatasetsLive();
+                    })
+                    .then(function (records) {
+                        populateDatasetSelect(records);
+                        if (external && !isExternalUrl(external)) {
+                            var resolved = resolveEntryRef(external, datasetRecords);
+                            if (resolved) {
+                                select.selectedIndex = resolved.index + 1;
+                                selectRecord(resolved.record, resolved.file, false);
+                                howToLoad.style.display = 'none';
+                            } else if (hasLoadParam) {
+                                displayWarning('Unknown entry/file in URL: ' + external);
+                                loadFallbackExample();
+                            } else {
+                                // default dataset not in the index (yet): auto-select the first archive record
+                                var firstOption = select.options[1];
+                                if (firstOption) firstOption.dataset.autoLoad = 'true';
+                                select.selectedIndex = 1;
+                                select.dispatchEvent(new Event('change'));
+                                howToLoad.style.display = 'none';
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        displayWarning('Could not fetch the list of chemiscope datasets: ' + error.toString());
+                        if (!external) {
+                            loadFallbackExample();
+                        }
+                    });
+            });
+
+            // Hide mc-header if ?minimal=true
+            (function () {
+                var params = new URLSearchParams(window.location.search);
+                if (params.get('minimal') === 'true') {
+                    var header = document.querySelector('mc-header');
+                    if (header) header.style.display = 'none';
+                    var mcInfo = document.getElementById('loaded-from-materialscloud');
+                    if (mcInfo) mcInfo.style.display = 'none';
+                }
+            })();
+        </script>
+    </body>
+</html>
