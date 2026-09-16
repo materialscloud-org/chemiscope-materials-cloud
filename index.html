@@ -59,19 +59,21 @@
 
         <!-- Dataset selector -->
         <div class="dataset-toolbar">
-            <label for="dataset-select">Dataset:</label>
+            <label for="dataset-select">View a Materials Cloud Archive record:</label>
             <select id="dataset-select" disabled>
                 <option value="">Loading datasets from the Materials Cloud Archive…</option>
             </select>
+
+            <span class="toolbar-divider">or</span>
+
+            <div class="drop-zone" id="drop-zone" tabindex="0">
+                drop a chemiscope file here
+                <input type="file" id="file-input" accept=".json,.gz,application/json,application/gzip" style="display: none" />
+            </div>
         </div>
 
         <div class="record-meta" id="record-meta" style="display: none"></div>
         <div class="dataset-files" id="dataset-files" style="display: none"></div>
-
-        <div class="drop-zone" id="drop-zone" tabindex="0">
-            <p>Drop a <code>.json</code> or <code>.json.gz</code> file here — or click to browse</p>
-            <input type="file" id="file-input" accept=".json,.gz,application/json,application/gzip" style="display: none" />
-        </div>
 
         <!-- Main viewer -->
         <main id="chemiscope-container">
