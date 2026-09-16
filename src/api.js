@@ -1,6 +1,6 @@
 export const MCA_API = 'https://archive.materialscloud.org/api/records';
 
-export const DEFAULT_DATASET_REF = 'gxcgf-rkh55_arginine-kpcovr-0.55-chemiscope.json.gz';
+export const DEFAULT_DATASET_REF = 'arginine-kpcovr-0.55-chemiscope.json';
 
 /**
  * Build the download URL for one file of an archive record. The `filename`
@@ -21,6 +21,21 @@ export function datasetUrlFromRecord(record, fileKey) {
     );
 }
 
+/**
+ * Download URL for one file of a record: prefer the `dlURL` stored in the
+ * index JSON (single source of truth), else reconstruct it from the record.
+ */
+export function fileDownloadUrl(record, fileKey) {
+    if (record.files) {
+        for (var i = 0; i < record.files.length; i++) {
+            if (record.files[i].key === fileKey && record.files[i].dlURL) {
+                return record.files[i].dlURL;
+            }
+        }
+    }
+    return datasetUrlFromRecord(record, fileKey);
+}
+
 export function externalDataUrl(external) {
     const url = new URL(external);
     if (url.hostname.includes('materialscloud.org')) {
@@ -35,21 +50,54 @@ export function isExternalUrl(value) {
 }
 
 /**
+ * Extract the archive record id + file key from a materialscloud archive file
+ * URL, matching both the API form
+ * (`https://archive.materialscloud.org/api/records/ENTRYID/files/KEY/content`)
+ * and the direct download form used by the index `dlURL`
+ * (`https://archive.materialscloud.org/records/ENTRYID/files/KEY?download=1`).
+ * Returns null when the URL does not point at an archive file. Also unwraps
+ * the `cors.materialscloud.org` proxy prefix so proxied archive links resolve
+ * too.
+ */
+export function parseArchiveFileUrl(url) {
+    var raw = url;
+    var proxyPrefix = 'https://cors.materialscloud.org/';
+    if (raw.indexOf(proxyPrefix) === 0) {
+        raw = raw.slice(proxyPrefix.length);
+    }
+    var match = raw.match(
+        /^https?:\/\/archive\.materialscloud\.org\/(?:api\/records|records)\/([^/]+)\/files\/([^/?]+)/
+    );
+    if (!match) {
+        return null;
+    }
+    return {
+        id: decodeURIComponent(match[1]),
+        fileKey: decodeURIComponent(match[2]),
+    };
+}
+
+/**
  * Guess a file name (used to build a `File` for streaming/parsing) from a
  * dataset URL: prefer the `filename` query parameter, then the last path
- * segment, then a neutral fallback.
+ * segment, then a neutral fallback. Handles both absolute and relative URLs.
  */
 export function fileNameFromUrl(url) {
-    var parsed = new URL(url);
-    var name = parsed.searchParams.get('filename');
-    if (name) {
-        return name;
+    try {
+        var parsed = new URL(url, window.location.href);
+        var name = parsed.searchParams.get('filename');
+        if (name) {
+            return name;
+        }
+        var segments = parsed.pathname.split('/').filter(Boolean);
+        if (segments.length > 0) {
+            return decodeURIComponent(segments[segments.length - 1]);
+        }
+    } catch (e) {
+        // fall through — use raw string
     }
-    var segments = parsed.pathname.split('/').filter(Boolean);
-    if (segments.length > 0) {
-        return decodeURIComponent(segments[segments.length - 1]);
-    }
-    return 'dataset.json';
+    var fallback = url.split('/').pop();
+    return fallback || 'dataset.json';
 }
 
 /**

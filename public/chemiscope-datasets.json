@@ -28,7 +28,8 @@
         "key": "dataset_chemiscope.json.gz",
         "size": 1401448,
         "size_human": "1.34 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/rr3za-8c528/files/dataset_chemiscope.json.gz"
       }
     ]
   },
@@ -64,7 +65,8 @@
         "key": "clusters_val.chemiscope.json.gz",
         "size": 215980,
         "size_human": "210.9 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/zd984-2ja12/files/clusters_val.chemiscope.json.gz"
       }
     ]
   },
@@ -100,19 +102,22 @@
         "key": "mad-bench.chemiscope.json.gz",
         "size": 5103058,
         "size_human": "4.87 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/c4ene-0mv14/files/mad-bench.chemiscope.json.gz"
       },
       {
         "key": "mad-landmarks.chemiscope.json.gz",
         "size": 494650,
         "size_human": "483.1 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/c4ene-0mv14/files/mad-landmarks.chemiscope.json.gz"
       },
       {
         "key": "mad-subsets.chemiscope.json.gz",
         "size": 5073971,
         "size_human": "4.84 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/c4ene-0mv14/files/mad-subsets.chemiscope.json.gz"
       }
     ]
   },
@@ -144,7 +149,8 @@
         "key": "dataset_chemiscope.json.gz",
         "size": 1073306,
         "size_human": "1.02 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/zn7cy-7cs67/files/dataset_chemiscope.json.gz"
       }
     ]
   },
@@ -175,7 +181,8 @@
         "key": "topoclass.chemiscope.json.gz",
         "size": 20722891,
         "size_human": "19.76 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gnv15-27a69/files/topoclass.chemiscope.json.gz"
       }
     ]
   },
@@ -207,13 +214,15 @@
         "key": "MeOH-chemiscope.json.gz",
         "size": 139767190,
         "size_human": "133.29 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/95z7z-zbr43/files/MeOH-chemiscope.json.gz"
       },
       {
         "key": "TFE-chemiscope.json.gz",
         "size": 109539545,
         "size_human": "104.47 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/95z7z-zbr43/files/TFE-chemiscope.json.gz"
       }
     ]
   },
@@ -246,13 +255,15 @@
         "key": "Ground_state_spin_dataset_chemiscope.json.gz",
         "size": 1269939,
         "size_human": "1.21 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jw6j6-nn007/files/Ground_state_spin_dataset_chemiscope.json.gz"
       },
       {
         "key": "Supplementary_dataset_chemiscope.json.gz",
         "size": 1219835,
         "size_human": "1.16 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jw6j6-nn007/files/Supplementary_dataset_chemiscope.json.gz"
       }
     ]
   },
@@ -285,19 +296,22 @@
         "key": "I2-BBN-final_chemiscope.json.gz",
         "size": 26371,
         "size_human": "25.8 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/727tj-38v21/files/I2-BBN-final_chemiscope.json.gz"
       },
       {
         "key": "I2-BMe2-final_chemiscope.json.gz",
         "size": 4989,
         "size_human": "4.9 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/727tj-38v21/files/I2-BMe2-final_chemiscope.json.gz"
       },
       {
         "key": "I2-BPh2-final_chemiscope.json.gz",
         "size": 55705,
         "size_human": "54.4 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/727tj-38v21/files/I2-BPh2-final_chemiscope.json.gz"
       }
     ]
   },
@@ -331,37 +345,43 @@
         "key": "cc_preds-chemiscope.json.gz",
         "size": 27132,
         "size_human": "26.5 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jnnpw-b8c82/files/cc_preds-chemiscope.json.gz"
       },
       {
         "key": "cp_preds-chemiscope.json.gz",
         "size": 22901,
         "size_human": "22.4 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jnnpw-b8c82/files/cp_preds-chemiscope.json.gz"
       },
       {
         "key": "csd_ligs-chemiscope.json.gz",
         "size": 748446,
         "size_human": "730.9 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jnnpw-b8c82/files/csd_ligs-chemiscope.json.gz"
       },
       {
         "key": "da_f_preds-chemiscope.json.gz",
         "size": 28257,
         "size_human": "27.6 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jnnpw-b8c82/files/da_f_preds-chemiscope.json.gz"
       },
       {
         "key": "lit_ligs-chemiscope.json.gz",
         "size": 267788,
         "size_human": "261.5 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jnnpw-b8c82/files/lit_ligs-chemiscope.json.gz"
       },
       {
         "key": "oa_preds-chemiscope.json.gz",
         "size": 19261,
         "size_human": "18.8 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jnnpw-b8c82/files/oa_preds-chemiscope.json.gz"
       }
     ]
   },
@@ -394,13 +414,15 @@
         "key": "Dimers_selected_chemiscope.json.gz",
         "size": 2131293,
         "size_human": "2.03 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/20dc5-mvx03/files/Dimers_selected_chemiscope.json.gz"
       },
       {
         "key": "FORMED_chemiscope.json.gz",
         "size": 94007012,
         "size_human": "89.65 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/20dc5-mvx03/files/FORMED_chemiscope.json.gz"
       }
     ]
   },
@@ -434,13 +456,15 @@
         "key": "csd_ligs-chemiscope.json.gz",
         "size": 749270,
         "size_human": "731.7 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/d767c-hne42/files/csd_ligs-chemiscope.json.gz"
       },
       {
         "key": "lit_ligs-chemiscope.json.gz",
         "size": 268318,
         "size_human": "262.0 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/d767c-hne42/files/lit_ligs-chemiscope.json.gz"
       }
     ]
   },
@@ -473,7 +497,8 @@
         "key": "HEA25.chemiscope.json.gz",
         "size": 11764924,
         "size_human": "11.22 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/jkaf5-anv04/files/HEA25.chemiscope.json.gz"
       }
     ]
   },
@@ -503,7 +528,8 @@
         "key": "4k-aSi_maps_alph_005-chemiscope.json",
         "size": 1508039,
         "size_human": "1.44 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/4g9fy-mq907/files/4k-aSi_maps_alph_005-chemiscope.json"
       }
     ]
   },
@@ -537,7 +563,8 @@
         "key": "svm-pcovr-ch_candidates.chemiscope.json.gz",
         "size": 7746186,
         "size_human": "7.39 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/fwsfb-c1r63/files/svm-pcovr-ch_candidates.chemiscope.json.gz"
       }
     ]
   },
@@ -570,7 +597,8 @@
         "key": "PCA-map-liquidH-chemiscope.json.gz",
         "size": 166342849,
         "size_human": "158.64 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/xf0y8-0g933/files/PCA-map-liquidH-chemiscope.json.gz"
       }
     ]
   },
@@ -605,25 +633,29 @@
         "key": "DLPNO-CCSD-chemiscope.json.gz",
         "size": 1460157,
         "size_human": "1.39 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/x12qf-mr670/files/DLPNO-CCSD-chemiscope.json.gz"
       },
       {
         "key": "OSCAR_DHBD_DFT-chemiscope.json.gz",
         "size": 5289337,
         "size_human": "5.04 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/x12qf-mr670/files/OSCAR_DHBD_DFT-chemiscope.json.gz"
       },
       {
         "key": "OSCAR_NHC-chemiscope.json.gz",
         "size": 6451685,
         "size_human": "6.15 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/x12qf-mr670/files/OSCAR_NHC-chemiscope.json.gz"
       },
       {
         "key": "Seed_CSD-chemiscope.json.gz",
         "size": 3048361,
         "size_human": "2.91 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/x12qf-mr670/files/Seed_CSD-chemiscope.json.gz"
       }
     ]
   },
@@ -654,7 +686,8 @@
         "key": "gaas-dataset.chemiscope.json.gz",
         "size": 13670763,
         "size_human": "13.04 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/dfnmr-0r807/files/gaas-dataset.chemiscope.json.gz"
       }
     ]
   },
@@ -690,61 +723,71 @@
         "key": "arginine-kpcovr-0.55-chemiscope.json.gz",
         "size": 1163153,
         "size_human": "1.11 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/arginine-kpcovr-0.55-chemiscope.json.gz"
       },
       {
         "key": "azaphenacenes-kpcovr-0.65-chemiscope.json.gz",
         "size": 287647,
         "size_human": "280.9 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/azaphenacenes-kpcovr-0.65-chemiscope.json.gz"
       },
       {
         "key": "C-VII-kpcovr-0.0-chemiscope.json.gz",
         "size": 1632157,
         "size_human": "1.56 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/C-VII-kpcovr-0.0-chemiscope.json.gz"
       },
       {
         "key": "C-VII-kpcovr-0.5-chemiscope.json.gz",
         "size": 1634315,
         "size_human": "1.56 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/C-VII-kpcovr-0.5-chemiscope.json.gz"
       },
       {
         "key": "C-VII-kpcovr-1.0-chemiscope.json.gz",
         "size": 1631830,
         "size_human": "1.56 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/C-VII-kpcovr-1.0-chemiscope.json.gz"
       },
       {
         "key": "CSD-1000R-kpcovr-0.5-chemiscope.json.gz",
         "size": 1082067,
         "size_human": "1.03 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/CSD-1000R-kpcovr-0.5-chemiscope.json.gz"
       },
       {
         "key": "DEEM-global-kpcovr-0.5-chemiscope.json.gz",
         "size": 3159070,
         "size_human": "3.01 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/DEEM-global-kpcovr-0.5-chemiscope.json.gz"
       },
       {
         "key": "DEEM-local-kpcovr-0.5-chemiscope.json.gz",
         "size": 771946,
         "size_human": "753.9 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/DEEM-local-kpcovr-0.5-chemiscope.json.gz"
       },
       {
         "key": "qm9-12PC-kpcovr-0.5-chemiscope.json.gz",
         "size": 3418447,
         "size_human": "3.26 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/qm9-12PC-kpcovr-0.5-chemiscope.json.gz"
       },
       {
         "key": "qm9-12PC-kpcovr-1.0-chemiscope.json.gz",
         "size": 3415861,
         "size_human": "3.26 MB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/gxcgf-rkh55/files/qm9-12PC-kpcovr-1.0-chemiscope.json.gz"
       }
     ]
   },
@@ -777,19 +820,22 @@
         "key": "asymmetric_ch4.chemiscope.json.gz",
         "size": 63974,
         "size_human": "62.5 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/xk012-g6s95/files/asymmetric_ch4.chemiscope.json.gz"
       },
       {
         "key": "degenerate_ch4.chemiscope.json.gz",
         "size": 59496,
         "size_human": "58.1 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/xk012-g6s95/files/degenerate_ch4.chemiscope.json.gz"
       },
       {
         "key": "symmetric_ch4.chemiscope.json.gz",
         "size": 42272,
         "size_human": "41.3 KB",
-        "description": ""
+        "description": "",
+        "dlURL": "https://archive.materialscloud.org/records/xk012-g6s95/files/symmetric_ch4.chemiscope.json.gz"
       }
     ]
   }

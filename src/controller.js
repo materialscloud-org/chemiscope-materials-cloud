@@ -1,9 +1,10 @@
 import {
     DEFAULT_DATASET_REF,
-    datasetUrlFromRecord,
+    fileDownloadUrl,
     externalDataUrl,
     fetchChemiscopeDatasets,
     isExternalUrl,
+    parseArchiveFileUrl,
 } from './api.js';
 import { displayError, displayWarning } from './errors.js';
 import { renderFileButtons } from './files.js';
@@ -37,13 +38,31 @@ export function populateDatasetSelect(records) {
     }
 }
 
+function findRecordById(id) {
+    for (var i = 0; i < datasetRecords.length; i++) {
+        if (datasetRecords[i].id === id) {
+            return datasetRecords[i];
+        }
+    }
+    return null;
+}
+
+function fileKeyInRecord(record, fileKey) {
+    for (var i = 0; i < record.files.length; i++) {
+        if (record.files[i].key === fileKey) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function selectRecord(record, fileKey, autoLoadFirst) {
     var metaElement = document.getElementById('record-meta');
     var filesElement = document.getElementById('dataset-files');
     renderRecordMeta(metaElement, record);
     renderFileButtons(filesElement, record, function (key) {
         setLoadParam(record.id, key);
-        var datasetUrl = datasetUrlFromRecord(record, key);
+        var datasetUrl = fileDownloadUrl(record, key);
         loadDataset(externalDataUrl(datasetUrl));
     });
     if (fileKey) {
@@ -56,7 +75,7 @@ function selectRecord(record, fileKey, autoLoadFirst) {
             }
         }
         setLoadParam(record.id, fileKey);
-        var datasetUrl = datasetUrlFromRecord(record, fileKey);
+        var datasetUrl = fileDownloadUrl(record, fileKey);
         loadDataset(externalDataUrl(datasetUrl));
     } else if (autoLoadFirst) {
         var first = filesElement.querySelector('.file-button');
@@ -108,7 +127,7 @@ export function init() {
         var filesElement = document.getElementById('dataset-files');
         renderFileButtons(filesElement, record, function (key) {
             setLoadParam(record.id, key);
-            var datasetUrl = datasetUrlFromRecord(record, key);
+            var datasetUrl = fileDownloadUrl(record, key);
             loadDataset(externalDataUrl(datasetUrl));
         });
         if (option.dataset.autoLoad === 'true') {
@@ -161,9 +180,17 @@ export function init() {
         event.preventDefault();
     });
 
+    // Archive URLs may still point at entries we know about locally; defer
+    // their load until the index arrives so we can canonicalize ?load=.
+    var pendingArchive = null;
+
     if (external) {
         if (isExternalUrl(external)) {
-            loadDataset(externalDataUrl(external));
+            if (parseArchiveFileUrl(external)) {
+                pendingArchive = external;
+            } else {
+                loadDataset(externalDataUrl(external));
+            }
         } else {
             howToLoad.style.display = 'block';
         }
@@ -174,6 +201,22 @@ export function init() {
     fetchChemiscopeDatasets()
         .then(function (records) {
             populateDatasetSelect(records);
+            if (pendingArchive) {
+                var ref = parseArchiveFileUrl(pendingArchive);
+                var record = ref ? findRecordById(ref.id) : null;
+                if (record && fileKeyInRecord(record, ref.fileKey)) {
+                    select.selectedIndex = datasetRecords.indexOf(record) + 1;
+                    selectRecord(record, ref.fileKey, false);
+                } else {
+                    displayWarning(
+                        'Archive entry not in local index \u2014 loading URL directly: ' +
+                            ref.fileKey
+                    );
+                    loadDataset(externalDataUrl(pendingArchive));
+                }
+                howToLoad.style.display = 'none';
+                return;
+            }
             if (external && !isExternalUrl(external)) {
                 var resolved = resolveEntryRef(external, datasetRecords);
                 if (resolved) {
@@ -183,16 +226,17 @@ export function init() {
                 } else if (hasLoadParam) {
                     displayWarning('Unknown entry/file in URL: ' + external);
                 } else {
-                    // default dataset not in the index (yet): auto-select the first archive record
-                    var firstOption = select.options[1];
-                    if (firstOption) firstOption.dataset.autoLoad = 'true';
-                    select.selectedIndex = 1;
-                    select.dispatchEvent(new Event('change'));
+                    // default dataset is a local file in public/ — load it directly
                     howToLoad.style.display = 'none';
+                    loadDataset(external);
                 }
             }
         })
         .catch(function (error) {
-            displayWarning('Could not load the dataset index: ' + error.toString());
+            if (pendingArchive) {
+                loadDataset(externalDataUrl(pendingArchive));
+            } else {
+                displayWarning('Could not load the dataset index: ' + error.toString());
+            }
         });
 }

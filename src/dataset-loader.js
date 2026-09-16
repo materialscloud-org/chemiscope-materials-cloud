@@ -67,7 +67,15 @@ export async function loadDataset(url) {
         }
     }
 
-    const file = new File(chunks, fileNameFromUrl(url));
+    const fileName = fileNameFromUrl(url);
+    const totalLength = chunks.reduce(function (sum, c) { return sum + c.byteLength; }, 0);
+    const combined = new Uint8Array(totalLength);
+    var offset = 0;
+    for (var i = 0; i < chunks.length; i++) {
+        combined.set(chunks[i], offset);
+        offset += chunks[i].byteLength;
+    }
+    const file = new File([combined], fileName);
     await loadFile(file);
 }
 
