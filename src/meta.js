@@ -4,14 +4,18 @@ export function renderRecordMeta(element, record) {
 
   var title = document.createElement("h2");
   title.className = "record-meta-title";
-  var link = document.createElement("a");
-  link.href =
-    record.url || "https://archive.materialscloud.org/records/" + record.id;
-  link.target = "_blank";
-  link.rel = "noopener";
-  link.textContent =
-    `${meta.title || record.id}` + (record.doi ? ` [${record.doi}]` : "");
-  title.appendChild(link);
+  var text = `${meta.title || record.id}` + (record.doi ? ` [${record.doi}]` : "");
+  if (record.url) {
+    var link = document.createElement("a");
+    link.href = record.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = text;
+    title.appendChild(link);
+  } else {
+    // e.g. the bundled example dataset / locally dropped file: no link target
+    title.textContent = text;
+  }
 
   element.appendChild(title);
 
