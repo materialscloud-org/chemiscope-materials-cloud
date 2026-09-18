@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interactive data visualization for materials and molecular databases. Correlate atomic structures and their properties, either online or with a portable app."
+    />
+    <title>Chemiscope</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="chemiscope-icon.png"
+      sizes="32x32"
+    />
+
+    <!-- Plausible analytics -->
+    <script type="text/javascript">
+      var header = document.getElementsByTagName("head")[0];
+      var plausible = document.createElement("script");
+      var domain_name = window.location.hostname;
+      plausible.async = "";
+      plausible.defer = "";
+      plausible.dataset["domain"] = domain_name;
+      plausible.src = "https://plausible.io/js/plausible.js";
+      header.appendChild(plausible);
+    </script>
+
+    <!-- Chemiscope v1.1.0 (built from GitHub source, vendored in public/vendor/) -->
+    <script defer src="vendor/chemiscope-1.1.0.min.js"></script>
+
+    <link rel="stylesheet" href="chemiscope.css" />
+  </head>
+
+  <body>
+    <!-- mc-header -->
+    <script>
+      var breadcrumbsPath = [
+        { name: "Work", link: "https://www.materialscloud.org/work" },
+        { name: "Tools", link: "https://www.materialscloud.org/work/tools" },
+        { name: "Chemiscope", link: null },
+      ];
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/materialscloud-org/mc-header@main/header.js"
+      defer
+    ></script>
+    <div id="loaded-from-materialscloud" style="display: none"></div>
+
+    <!-- Alerts -->
+    <div class="mc-container">
+      <h1>Materials Cloud Chemiscope visualizer</h1>
+      <div
+        class="alert alert-danger pop-on-top"
+        id="error-display"
+        style="display: none"
+      >
+        <button
+          class="close-btn"
+          onclick="this.parentElement.style.display = 'none'"
+        >
+          &times;
+        </button>
+        <p></p>
+        <details>
+          <summary>Backtrace</summary>
+          <p></p>
+        </details>
+      </div>
+
+      <div
+        class="alert alert-warning pop-on-top"
+        id="warning-display"
+        style="display: none"
+      >
+        <button
+          class="close-btn"
+          onclick="this.parentElement.style.display = 'none'"
+        >
+          &times;
+        </button>
+        <p></p>
+      </div>
+
+      <!-- Dataset selector -->
+      <div class="dataset-toolbar">
+        <label for="dataset-select"
+          >View a Materials Cloud Archive record:</label
+        >
+        <select id="dataset-select" disabled>
+          <option value="">
+            Loading datasets from the Materials Cloud Archive…
+          </option>
+        </select>
+
+        <span class="toolbar-divider">or</span>
+
+        <div class="drop-zone" id="drop-zone" tabindex="0">
+          drop a chemiscope file here or click to browse
+          <input
+            type="file"
+            id="file-input"
+            accept=".json,.gz,application/json,application/gzip"
+            style="display: none"
+          />
+        </div>
+      </div>
+
+      <div class="record-meta" id="record-meta" style="display: none"></div>
+      <div class="dataset-files" id="dataset-files" style="display: none"></div>
+
+      <!-- Main viewer -->
+      <main id="chemiscope-container">
+        <div id="spinner">
+          <img width="120" src="mcloud_spinner.svg" alt="" />
+          <p id="loading-text"></p>
+          <div class="progress" id="progress" style="display: none">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+        </div>
+
+        <div id="chemiscope-meta"></div>
+
+        <div id="viewer-placeholder" style="display: none">
+          <p>Select a file above to visualize it.</p>
+        </div>
+
+        <div class="viewer-row" id="viewer-row">
+          <div class="viewer-left">
+            <div id="chemiscope-map"></div>
+          </div>
+
+          <div class="viewer-right">
+            <div id="chemiscope-structure"></div>
+            <div id="chemiscope-info"></div>
+          </div>
+        </div>
+
+        <span class="powered-by-chemiscope">
+          Powered by
+          <a target="_blank" href="https://chemiscope.org">chemiscope</a>
+        </span>
+      </main>
+    </div>
+
+    <!-- Entry point: ES module (Vite bundles at build, preserves module syntax at dev) -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
