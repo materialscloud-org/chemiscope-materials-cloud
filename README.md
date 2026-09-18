@@ -1,28 +1,15 @@
 # Chemiscope deployment as a Materials Cloud tool
 
-A single-page static app that loads [chemiscope](https://chemiscope.org) v1.1.0
-(bundled locally, see below) built with [Vite](https://vitejs.dev).
+Used in the Materials Cloud Archive integration.
 
-It ships with a cached index of the [Materials Cloud Archive](https://archive.materialscloud.org)
-records containing chemiscope data files (filenames with "chemiscope" in them
-that end in `.json` or `.json.gz`), and builds an archive-entry dropdown from it:
-pick an entry to see its metadata and its chemiscope files (with sizes) as
-buttons. You can also load any dataset directly with the `?load=<url>` GET
-parameter, or drag-and-drop a local `.json` / `.json.gz` file onto the page.
+deployed through cloudflare-pages https://chemiscope.materialscloud.io/ under the materialscloud developers cloudflare account.
 
-## Loading data
+development urls can be found on: branchname.
 
-- **Default example**: `public/arginine-kpcovr-0.55-chemiscope.json` (plain
-  JSON, the kernel principal covariates regression classic) is served from the
-  site itself — no archive fetch needed to see the tool work.
-- **Archive entries**: downloaded through the Materials Cloud Archive API
-  (CORS works on `*.materialscloud.org`; external hosts go through the
-  `cors.materialscloud.org` proxy).
-- **Streaming**: datasets ≥ 75 MB are loaded with chemiscope's streaming
-  loader (`src/streaming.ts`, vendored from the chemiscope repo): incremental
-  JSON tokenizer + native `DecompressionStream` gunzip + IndexedDB structure
-  store, with real progress (bytes + structure count). Smaller files are
-  decompressed and parsed in memory.
+```
+branchname.chemiscope-materials-cloud.pages.dev
+commit-hash.chemiscope-materials-cloud.pages.dev
+```
 
 ## Updating the dataset index
 
@@ -33,48 +20,29 @@ node scripts/update-chemiscope-index.mjs
 ```
 
 This writes `public/chemiscope-datasets.json` (with preformatted file sizes),
-which should be committed and deployed. The page relies on this static index
-only - there is no live fallback.
+which should be committed and deployed.
 
-## Checking changes locally
+A GH CI/CD pipeline automatically runs this once a day and commits a change if the resulting index has changed.
+
+## Development
 
 ```
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
-Then navigate to `http://localhost:5173`.
-
-To produce a production build and preview it:
+http://localhost:5173
 
 ```
 npm run build
 npm run preview
 ```
 
-`public/` is served at the root of the site, which is where the dataset index,
-the default example dataset, and the vendored chemiscope bundle live.
-
 ## Updating chemiscope
 
-The chemiscope library is NOT loaded from a CDN. `public/vendor/chemiscope-1.1.0.min.js`
-is a UMD build we produce from the chemiscope source, because npm only ships
-v0.5.2 while the modern streaming loader needs v1.1.0. To upgrade:
+chemiscope is a UMD JS build which is slightly awkward to use, therefore the chemiscope bundle has been vendored `public/vendor`. This could be significantly improved with probably little work.
 
-```
-git clone --depth 1 --branch v1.1.0 https://github.com/lab-cosmo/chemiscope /tmp/chemiscope
-cd /tmp/chemiscope
-npm ci
-npm run build
-cp dist/chemiscope.min.js dist/chemiscope.min.js.LICENSE.txt ../chemiscope-materials-cloud/public/vendor/chemiscope-<version>.min.js{,.LICENSE.txt}
-```
+Additionally:
 
-Then update the `<script src="vendor/...">` tag in `index.html`.
-
-Notes:
-
-- The v1.1.0 bundle needs no external jQuery or pako (native
-  `DecompressionStream` handles gzip; jQuery is not used).
 - `src/streaming.ts` is a copy of the chemiscope webapp's `app/streaming.ts`
-  (BSD-3-Clause) with its type-only import removed; update it together with
-  the bundle if you bump the chemiscope version.
+  (BSD-3-Clause) with its type-only import removed.
