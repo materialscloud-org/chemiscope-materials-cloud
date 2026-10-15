@@ -7,7 +7,7 @@ import {
 } from "./progress.js";
 import { releaseActiveStream } from "./streaming.js";
 
-// chemiscope 1.1.0 only accepts these top-level settings keys (anything else
+// chemiscope 1.1.1 only accepts these top-level settings keys (anything else
 // throws `invalid key "<key>" in settings`).
 const ALLOWED_SETTINGS = ["map", "structure", "pinned", "target"];
 

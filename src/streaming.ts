@@ -1,5 +1,5 @@
 /**
- * Vendored from lab-cosmo/chemiscope@v1.1.0 (app/streaming.ts), BSD-3-Clause
+ * Vendored from lab-cosmo/chemiscope@v1.1.1 (app/streaming.ts), BSD-3-Clause
  * (https://github.com/lab-cosmo/chemiscope). Self-contained: the type-only
  * import from ../src/dataset was removed; types stay as annotations.
  * Exports: loadDatasetStreaming, shouldUseStreaming, progressMessage,
