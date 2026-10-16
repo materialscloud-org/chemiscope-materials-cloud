@@ -24,11 +24,16 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Install deps
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run cache generation script
-        run: npm run update-chemiscope-index
+        run: pnpm run update-chemiscope-index
 
       - name: Commit and push if changed
         run: |
