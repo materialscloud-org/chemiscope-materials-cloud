@@ -1,18 +1,18 @@
 [
   {
-    "id": "91yq0-w3k31",
-    "url": "https://archive.materialscloud.org/records/91yq0-w3k31",
-    "doi": "10.24435/materialscloud:rs-tt",
+    "id": "t2922-k9d07",
+    "url": "https://archive.materialscloud.org/records/t2922-k9d07",
+    "doi": "10.24435/materialscloud:82-x8",
     "metadata": {
-      "title": "Hierarchical universal open structure dataset for atomistic modeling. MAD-CORE",
-      "description": "MAD-CORE is an ordered coreset of 2 24 structures selected from MAD-COSMO, a collection of 1.7 billion structures from publicly available atomistic datasets. Structures are stored in selection order, so the first 2 k structures form the coreset of level k. The record contains geometries, model-predicted energies and forces, the features used for the selection, ids, source metadata and diagnostics, as gzipped extended XYZ and HDF5 files, and a chemiscope map of the first 2 20 structures. It also includes FHI-aims DFT reference calculations at LDA and PBE for about 79,000 structures from four selections (the first 25,000 MAD-CORE structures, 25,000 structures sampled with Voronoi cells and 31,000 structures drawn uniformly from MAD-COSMO) and 21,854 r2SCAN structures used in the validation experiments.",
+      "title": "Hierarchical universal open structure dataset for atomistic modeling (MAD-CORE)",
+      "description": "MAD-CORE is an ordered coreset of 2 24 structures selected from MAD-COSMO, a collection of 1.7 billion structures from publicly available atomistic datasets. Structures are stored in selection order, so the first 2 k structures form the coreset of level k. The record contains geometries, model-predicted energies and forces, the features used for the selection, ids, source metadata and diagnostics, as gzipped extended XYZ and HDF5 files, and a chemiscope map of the first 2 20 structures. It also includes FHI-aims DFT calculations at LDA and PBE for about 79,000 and 77,000 structures, respectively, from four selections (the first 25,000 MAD-CORE structures, 25,000 structures sampled with Voronoi cells and 25,000 uniformly sampled MAD-COSMO structures and a separate random test selection of 6,000 structures). The record also includes r&sup2;SCAN labels for 21,854 structures used in the training and evaluation experiments.",
       "creators": [
         "Chorna, Sofiia",
         "Malosso, Cesare",
         "Schmidt, Jonathan",
         "Ceriotti, Michele"
       ],
-      "publication_date": "2026-10-16",
+      "publication_date": "2026-10-27",
       "license": "Creative Commons Attribution 4.0 International",
       "subjects": [
         "Atomistic datasets",
@@ -26,10 +26,10 @@
     "files": [
       {
         "key": "madcore_0-2pow20.chemiscope.json.gz",
-        "size": 286424279,
-        "size_human": "273.16 MB",
+        "size": 287794380,
+        "size_human": "274.46 MB",
         "description": "",
-        "dlURL": "https://chemiscope.materialscloud.io/?load=https%3A%2F%2Farchive.materialscloud.org%2Fapi%2Frecords%2F91yq0-w3k31%2Ffiles%2Fmadcore_0-2pow20.chemiscope.json.gz%2Fcontent%3Ffilename%3Dmadcore_0-2pow20.chemiscope.json.gz%26materials_cloud_doi%3D10.24435%252Fmaterialscloud%253Ars-tt"
+        "dlURL": "https://chemiscope.materialscloud.io/?load=https%3A%2F%2Farchive.materialscloud.org%2Fapi%2Frecords%2Ft2922-k9d07%2Ffiles%2Fmadcore_0-2pow20.chemiscope.json.gz%2Fcontent%3Ffilename%3Dmadcore_0-2pow20.chemiscope.json.gz%26materials_cloud_doi%3D10.24435%252Fmaterialscloud%253A82-x8"
       }
     ]
   },
